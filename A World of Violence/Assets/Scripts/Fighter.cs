@@ -18,7 +18,7 @@ public class Fighter : MonoBehaviour
     bool Grounded;
     public float JumpForce;
 
-    public float PersonalGravityScale;
+    public float Gravity;
 
     float JumpAscendDuration;
     public float MaxJumpAscendDuration;
