@@ -586,7 +586,8 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6168970, guid: 173c41364fecebd4e9cbbf966b3b0341, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 173c41364fecebd4e9cbbf966b3b0341, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &923685738
@@ -878,6 +879,7 @@ GameObject:
   - 61: {fileID: 1365582456}
   - 114: {fileID: 1365582461}
   - 114: {fileID: 1365582460}
+  - 114: {fileID: 1365582455}
   m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
@@ -885,6 +887,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1365582455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1365582454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b085f079e8813394aafe1efa10ed543f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Gravity: 9
+  CurrentGravity: 0
+  velocity: {x: 0, y: 0}
+  Grounded: 0
+  GroundCollision:
+    serializedVersion: 2
+    m_Bits: 768
+  DodgePlatformsCollision:
+    serializedVersion: 2
+    m_Bits: 0
+  DodgingPlatforms: 0
 --- !u!61 &1365582456
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -892,7 +916,7 @@ BoxCollider2D:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1365582454}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Material: {fileID: 6200000, guid: 96566dfaab56a5c4faaa1377e46aadca, type: 2}
   m_IsTrigger: 1
   m_UsedByEffector: 0
@@ -939,7 +963,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1365582454}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalPosition: {x: 1.27400005, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 371947026}
@@ -962,8 +986,8 @@ MonoBehaviour:
   Unarmed: {fileID: 2113159259}
   RunningAcceleration: 50
   Footing: 5
-  JumpForce: 800
-  PersonalGravityScale: 4
+  JumpForce: 400
+  Gravity: 43.2999992
   MaxJumpAscendDuration: .25
   MaxAttackDuration: 0
   ChargeDuration: 0
