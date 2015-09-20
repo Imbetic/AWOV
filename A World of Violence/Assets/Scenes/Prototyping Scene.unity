@@ -907,7 +907,7 @@ MonoBehaviour:
     m_Bits: 768
   DodgePlatformsCollision:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   DodgingPlatforms: 0
 --- !u!61 &1365582456
 BoxCollider2D:
@@ -963,7 +963,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1365582454}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.27400005, y: 2, z: 0}
+  m_LocalPosition: {x: -2.57999992, y: 24.8899994, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 371947026}
@@ -986,8 +986,8 @@ MonoBehaviour:
   Unarmed: {fileID: 2113159259}
   RunningAcceleration: 50
   Footing: 5
-  JumpForce: 400
-  Gravity: 43.2999992
+  JumpForce: 15
+  Gravity: 71.7600021
   MaxJumpAscendDuration: .25
   MaxAttackDuration: 0
   ChargeDuration: 0

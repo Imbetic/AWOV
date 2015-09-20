@@ -75,6 +75,22 @@ public class Fighter : MonoBehaviour
         Movement();
 
         Combat();
+
+        FighterPhysics.CalculateNextYVelocity(Footing);
+        FighterPhysics.DownPhysics();
+        if (!FighterPhysics.Grounded)
+        {
+            if (FighterPhysics.UpPhysics())
+            {
+                JumpAscendDuration = 0;
+                FighterPhysics.CurrentGravity = Gravity;
+            }
+            else
+            {
+                FighterPhysics.GravityStuff();
+            }
+        }
+        FighterPhysics.VelocityUpdate();
     }
 
     void Movement()
@@ -89,6 +105,11 @@ public class Fighter : MonoBehaviour
             //Body.AddForce(RunningAcceleration * Vector2.right);
             FighterPhysics.velocity += Vector2.right * Time.deltaTime * RunningAcceleration;
         }
+        if(Brain.moveDown)
+        {
+            FighterPhysics.DodgingPlatforms = true;
+        }
+        else FighterPhysics.DodgingPlatforms = false;
 
         Jumping();
 
@@ -114,7 +135,7 @@ public class Fighter : MonoBehaviour
 
                 //Body.AddForce(JumpForce * Vector2.up);
                 //Body.gravityScale = 0;
-                FighterPhysics.velocity += Vector2.up * Time.deltaTime * JumpForce;
+                FighterPhysics.velocity += Vector2.up * JumpForce;
                 FighterPhysics.CurrentGravity = 0;
                 JumpAscendDuration = MaxJumpAscendDuration;
             }
@@ -142,6 +163,13 @@ public class Fighter : MonoBehaviour
             if (FrictionForceX > RunningAcceleration) FrictionForceX = RunningAcceleration;
             //Body.AddForce(FrictionForceX * Vector2.right); //Friction
             FighterPhysics.velocity += FrictionForceX * Time.deltaTime * Vector2.right;
+
+            
+        }
+        if (JumpAscendDuration <= 0)
+        {
+            float FrictionForceY = -Footing * FighterPhysics.velocity.y;
+            FighterPhysics.velocity += FrictionForceY * Time.deltaTime * Vector2.up/2;
         }
     }
 
