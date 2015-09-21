@@ -12,7 +12,9 @@ public class RaycastPlatformer : MonoBehaviour
     public float JumpForce;
 
     public bool Grounded;
-    
+
+    public float playerheight;
+    public float playerwidth;
 
     public float Gravity = 20;
     float CurrentGravity;
@@ -57,7 +59,7 @@ public class RaycastPlatformer : MonoBehaviour
         DeltaTime = Time.deltaTime;
         if (DeltaTime > 0.04f) DeltaTime = 0.04f;
 
-        Brain.UpdateCommands();
+        Brain.UpdateMovementCommands();
 
         Movement();
         velocity += (ForceToAdd);
@@ -109,7 +111,7 @@ public class RaycastPlatformer : MonoBehaviour
 
         if (JumpIntervalTimer > 0)
         {
-            
+
             if (Grounded)
             {
                 JumpIntervalTimer = 0;
@@ -170,19 +172,19 @@ public class RaycastPlatformer : MonoBehaviour
             Grounded = false;
 
 
-            temppos = new Vector2(transform.position.x, transform.position.y + 0.5f);
+            temppos = new Vector2(transform.position.x, transform.position.y + playerheight / 2);
             RaycastHit2D miduprayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
 
-            temppos = new Vector2(transform.position.x, transform.position.y - 0.5f);
+            temppos = new Vector2(transform.position.x, transform.position.y - playerheight / 2);
             RaycastHit2D middownrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, CurrentLayer);
 
-            temppos = new Vector2(transform.position.x - 0.5f, transform.position.y);
+            temppos = new Vector2(transform.position.x - playerwidth / 2, transform.position.y);
             RaycastHit2D midleftrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
 
-            temppos = new Vector2(transform.position.x + 0.5f, transform.position.y);
+            temppos = new Vector2(transform.position.x + playerwidth / 2, transform.position.y);
             RaycastHit2D midrightrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
 
-            if(miduprayinfo.collider != null && velocity.y >0)
+            if (miduprayinfo.collider != null && velocity.y > 0)
             {
                 transform.position += new Vector3(0, miduprayinfo.distance * velocity.normalized.y, 0);
                 offseteddown = true;
@@ -214,21 +216,12 @@ public class RaycastPlatformer : MonoBehaviour
                 offsetedx = true;
             }
 
-            temppos = new Vector2(transform.position.x - 0.5f, transform.position.y + 0.5f);
-            RaycastHit2D upleftrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
-
-            temppos = new Vector2(transform.position.x + 0.5f, transform.position.y + 0.5f);
-            RaycastHit2D uprightrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
-
-            temppos = new Vector2(transform.position.x - 0.5f, transform.position.y - 0.5f);
-            RaycastHit2D downleftrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, CurrentLayer);
-
-            temppos = new Vector2(transform.position.x + 0.5f, transform.position.y - 0.5f);
-            RaycastHit2D downrightrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, CurrentLayer);
-
-            if (upleftrayinfo.collider != null && miduprayinfo.collider == null && midleftrayinfo.collider == null)
+            if (miduprayinfo.collider == null && midleftrayinfo.collider == null && (velocity.x < 0 || velocity.y > 0))
             {
-                if (velocity.x < 0 || velocity.y > 0)
+                temppos = new Vector2(transform.position.x - playerwidth / 2, transform.position.y + playerheight / 2);
+                RaycastHit2D upleftrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
+
+                if (upleftrayinfo.collider != null)
                 {
                     float tempX;
                     float tempY;
@@ -250,7 +243,7 @@ public class RaycastPlatformer : MonoBehaviour
                     {
                         if (tempY < 0 && !offseteddown)
                         {
-                            
+
                             transform.position += new Vector3(0, upleftrayinfo.distance * velocity.normalized.y, 0);
                             //OFFSET DOWN
                             offseteddown = true;
@@ -259,13 +252,15 @@ public class RaycastPlatformer : MonoBehaviour
                             velocity = new Vector2(velocity.x, 0);
                         }
                     }
-
                 }
             }
 
-            if (uprightrayinfo.collider != null && miduprayinfo.collider == null && midrightrayinfo.collider == null)
+            if (miduprayinfo.collider == null && midrightrayinfo.collider == null && (velocity.x > 0 || velocity.y > 0))
             {
-                if (velocity.x > 0 || velocity.y > 0)
+                temppos = new Vector2(transform.position.x + playerwidth / 2, transform.position.y + playerheight / 2);
+                RaycastHit2D uprightrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
+
+                if (uprightrayinfo.collider != null)
                 {
                     float tempX;
                     float tempY;
@@ -298,10 +293,14 @@ public class RaycastPlatformer : MonoBehaviour
                 }
             }
 
-            if (downleftrayinfo.collider != null && middownrayinfo.collider == null && midleftrayinfo.collider == null)
+            if (middownrayinfo.collider == null && midleftrayinfo.collider == null && (velocity.x < 0 || velocity.y < 0))
             {
-                if (velocity.x < 0 || velocity.y < 0)
+                temppos = new Vector2(transform.position.x - playerwidth / 2, transform.position.y - playerheight / 2);
+                RaycastHit2D downleftrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, CurrentLayer);
+
+                if (downleftrayinfo.collider != null)
                 {
+
                     float tempX;
                     float tempY;
 
@@ -333,12 +332,16 @@ public class RaycastPlatformer : MonoBehaviour
 
                         }
                     }
+
                 }
             }
 
-            if (downrightrayinfo.collider != null && middownrayinfo.collider == null && midrightrayinfo.collider == null)
+            if (middownrayinfo.collider == null && midrightrayinfo.collider == null && (velocity.x > 0 || velocity.y < 0))
             {
-                if (velocity.x > 0 || velocity.y < 0)
+                temppos = new Vector2(transform.position.x + playerwidth / 2, transform.position.y - playerheight / 2);
+                RaycastHit2D downrightrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, CurrentLayer);
+
+                if (downrightrayinfo.collider != null)
                 {
                     float tempX;
                     float tempY;
@@ -375,19 +378,7 @@ public class RaycastPlatformer : MonoBehaviour
                 }
             }
 
-
-            //float offset;
-            //if (offsetX < offsetY)
-            //{
-            //    offset = offsetX;
-            //}
-            //else offset = offsetY;
-
-            //else
-            {
-                transform.position += new Vector3(velocity.x, velocity.y, 0) * DeltaTime;
-
-            }
+            transform.position += new Vector3(velocity.x, velocity.y, 0) * DeltaTime;
 
             if (!offsetedup)
             {

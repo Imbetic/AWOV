@@ -5,6 +5,8 @@ public class Fighter : MonoBehaviour
 {
 
     CharacterActions Brain;
+    RaycastPlatformer Body;
+
 
     public GameObject Weapon;
     public GameObject Unarmed;
@@ -29,15 +31,16 @@ public class Fighter : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        
+        Body = GetComponent<RaycastPlatformer>();
         Brain = GetComponent<CharacterActions>();
+        Brain.UpdateCombatCommands();
         
     }
 
     //For isdownonces and preparations for FixedUpdate;
     void PreUpdate()
     {
-
+        
         
         if (Brain.upAttack || Brain.downAttack || Brain.leftAttack || Brain.rightAttack)
         {
@@ -49,7 +52,7 @@ public class Fighter : MonoBehaviour
             ChargeDuration = 0;
             PreviousAttack = false;
         }
-        //Brain.UpdateCommands();
+        Brain.UpdateCombatCommands();
     }
 
     void Update()

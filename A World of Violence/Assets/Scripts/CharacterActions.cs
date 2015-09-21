@@ -30,12 +30,17 @@ public class CharacterActions : MonoBehaviour
     public bool dropItem;
     public bool pickItem;
 
-    public virtual void UpdateCommands()
+    public virtual void UpdateCombatCommands()
     {
         PreviousupAttack = upAttack;
         PreviousdownAttack = downAttack;
         PreviousleftAttack = leftAttack;
         PreviousrightAttack = rightAttack;
+    }
+
+    public virtual void UpdateMovementCommands()
+    {
+        
     }
 
 }

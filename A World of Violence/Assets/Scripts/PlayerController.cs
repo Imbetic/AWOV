@@ -4,39 +4,9 @@ using System.Collections;
 public class PlayerController : CharacterActions
 {
 
-    public override void UpdateCommands()
+    public override void UpdateCombatCommands()
     {
-        base.UpdateCommands();
-
-        if (Input.GetKey(KeyCode.W))
-        {
-            moveUp = true;
-        }
-        else moveUp = false;
-
-        if (Input.GetKey(KeyCode.S))
-        {
-            moveDown = true;
-        }
-        else moveDown = false;
-
-        if (Input.GetKey(KeyCode.A))
-        {
-            moveLeft = true;
-        }
-        else moveLeft = false;
-
-        if (Input.GetKey(KeyCode.D))
-        {
-            moveRight = true;
-        }
-        else moveRight = false;
-
-        if (Input.GetKey(KeyCode.Space))
-        {
-            jump = true;
-        }
-        else jump = false;
+        base.UpdateCombatCommands();
 
         if (Input.GetKey(KeyCode.UpArrow))
         {
@@ -68,6 +38,41 @@ public class PlayerController : CharacterActions
         }
         else block = false;
 
+    }
+
+    public override void UpdateMovementCommands()
+    {
+        base.UpdateMovementCommands();
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            moveUp = true;
+        }
+        else moveUp = false;
+
+        if (Input.GetKey(KeyCode.S))
+        {
+            moveDown = true;
+        }
+        else moveDown = false;
+
+        if (Input.GetKey(KeyCode.A))
+        {
+            moveLeft = true;
+        }
+        else moveLeft = false;
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            moveRight = true;
+        }
+        else moveRight = false;
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            jump = true;
+        }
+        else jump = false;
     }
 
 }
