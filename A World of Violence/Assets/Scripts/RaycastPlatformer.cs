@@ -5,6 +5,16 @@ public class RaycastPlatformer : MonoBehaviour
 {
     CharacterActions Brain;
 
+    public bool BroClimb;
+    public bool BroSwing;
+    public int BonusJumps;
+    public float Levitation;
+    public float Quickfall;
+
+    bool PreviousBroSwinging = false;
+    bool Broswinging = false;
+    int BonusJumpCount;
+
     public float RunningAcceleration;
     public float Footing;
 
@@ -66,6 +76,10 @@ public class RaycastPlatformer : MonoBehaviour
         ForceToAdd *= 0;
 
         velocity += -Vector2.up * CurrentGravity * DeltaTime;
+        if(JumpAscendDuration<=0 && Brain.jump)
+        {
+            velocity += Vector2.up* Levitation * DeltaTime;
+        }
 
         Friction();
         Positioning();
@@ -103,7 +117,6 @@ public class RaycastPlatformer : MonoBehaviour
         {
             JumpIntervalTimer = JumpInterval;
         }
-
         else if (!Brain.jump)
         {
             JumpIntervalTimer = 0;
@@ -114,11 +127,17 @@ public class RaycastPlatformer : MonoBehaviour
 
             if (Grounded)
             {
+                BonusJumpCount = BonusJumps;
                 JumpIntervalTimer = 0;
-                //Grounded = false;
-                //Body.AddForce(JumpForce * Vector2.up);
-                //Body.gravityScale = 0;
                 velocity += Vector2.up * JumpForce;
+                CurrentGravity = 0;
+                JumpAscendDuration = MaxJumpAscendDuration;
+            }
+            else if(BonusJumpCount > 0)
+            {
+                BonusJumpCount -= 1;
+                JumpIntervalTimer = 0;               
+                velocity = new Vector2(velocity.x, JumpForce);
                 CurrentGravity = 0;
                 JumpAscendDuration = MaxJumpAscendDuration;
             }
@@ -131,7 +150,6 @@ public class RaycastPlatformer : MonoBehaviour
             JumpAscendDuration -= DeltaTime;
             if (JumpAscendDuration <= 0 || !Brain.jump)
             {
-                //Body.gravityScale = PersonalGravityScale;
                 CurrentGravity = Gravity;
                 JumpAscendDuration = 0;
             }
@@ -146,8 +164,6 @@ public class RaycastPlatformer : MonoBehaviour
             if (FrictionForceX > RunningAcceleration) FrictionForceX = RunningAcceleration;
             //Body.AddForce(FrictionForceX * Vector2.right); //Friction
             velocity += FrictionForceX * DeltaTime * Vector2.right;
-
-
         }
         if (velocity.y < 0)
         {
@@ -166,6 +182,9 @@ public class RaycastPlatformer : MonoBehaviour
 
         if (velocity.x != 0 || velocity.y != 0)
         {
+            PreviousBroSwinging = Broswinging;
+            Broswinging = false;
+
             bool offsetedup = false;
             bool offseteddown = false;
             bool offsetedx = false;
@@ -241,15 +260,29 @@ public class RaycastPlatformer : MonoBehaviour
                     }
                     else
                     {
-                        if (tempY < 0 && !offseteddown)
+                        if (tempY < 0 && !offseteddown && velocity.y > 0)
                         {
 
                             transform.position += new Vector3(0, upleftrayinfo.distance * velocity.normalized.y, 0);
                             //OFFSET DOWN
                             offseteddown = true;
-                            JumpAscendDuration = 0;
-                            CurrentGravity = Gravity;
-                            velocity = new Vector2(velocity.x, 0);
+                            //JumpAscendDuration = 0;
+                            //CurrentGravity = Gravity;
+                            //velocity = new Vector2(velocity.x, 0);
+                            if (Brain.jump && !Brain.moveLeft && BroSwing)
+                            {
+                                Broswinging = true;
+                                Grounded = true;
+                                velocity = new Vector2(5, 0);
+                                CurrentGravity = 0;
+                            }
+                            else
+                            {
+                                JumpAscendDuration = 0;
+                                CurrentGravity = Gravity;
+                                velocity = new Vector2(velocity.x, 0);
+                            }
+                            
                         }
                     }
                 }
@@ -280,14 +313,24 @@ public class RaycastPlatformer : MonoBehaviour
                     }
                     else
                     {
-                        if (tempY < 0 && !offseteddown)
+                        if (tempY < 0 && !offseteddown && velocity.y > 0)
                         {
                             transform.position += new Vector3(0, uprightrayinfo.distance * velocity.normalized.y, 0);
                             //OFFSET DOWN
                             offseteddown = true;
-                            JumpAscendDuration = 0;
-                            CurrentGravity = Gravity;
-                            velocity = new Vector2(velocity.x, 0);
+                            if (Brain.jump && !Brain.moveRight && BroSwing)
+                            {
+                                Broswinging = true;
+                                Grounded = true;
+                                velocity = new Vector2(-5, 0);
+                                CurrentGravity = 0;
+                            }
+                            else
+                            {
+                                JumpAscendDuration = 0;
+                                CurrentGravity = Gravity;
+                                velocity = new Vector2(velocity.x, 0);
+                            }
                         }
                     }
                 }
@@ -316,7 +359,15 @@ public class RaycastPlatformer : MonoBehaviour
                             {
                                 transform.position += new Vector3(downleftrayinfo.distance * velocity.normalized.x, 0, 0);
                             }
-                            velocity = new Vector2(0, velocity.y);
+                            
+                            if (Brain.moveLeft && JumpAscendDuration <= 0 && BroClimb)
+                            {
+                                velocity = new Vector2(0, 4);
+                            }
+                            else
+                            {
+                                velocity = new Vector2(0, velocity.y);
+                            }
                             offsetedx = true;
                         }
                     }
@@ -358,7 +409,16 @@ public class RaycastPlatformer : MonoBehaviour
                             {
                                 transform.position += new Vector3(downrightrayinfo.distance * velocity.normalized.x, 0, 0);
                             }
-                            velocity = new Vector2(0, velocity.y);
+
+                            if (Brain.moveRight && JumpAscendDuration <= 0 && BroClimb)
+                            {
+                                velocity = new Vector2(0, 4);
+                            }
+                            else
+                            {
+                                velocity = new Vector2(0, velocity.y);
+                            }
+
                             offsetedx = true;
 
                         }
@@ -377,12 +437,17 @@ public class RaycastPlatformer : MonoBehaviour
                     }
                 }
             }
-
-            transform.position += new Vector3(velocity.x, velocity.y, 0) * DeltaTime;
-
-            if (!offsetedup)
+            if(PreviousBroSwinging && !Broswinging)
             {
-                Grounded = false;
+                Grounded = true;
+                JumpIntervalTimer = JumpInterval;
+                velocity = new Vector2(velocity.x, 0);
+                //velocity = new Vector2(velocity.x, 10);
+            }
+            transform.position += new Vector3(velocity.x, velocity.y, 0) * DeltaTime;
+            if(Broswinging)
+            {
+                velocity = new Vector2(velocity.x, 10);
             }
         }
 
