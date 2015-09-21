@@ -11,18 +11,6 @@ public class Fighter : MonoBehaviour
 
     GameObject CurrentAttack;
 
-    public float RunningAcceleration;
-    public float Footing;
-
-    bool PreviousJump;
-    bool Grounded;
-    public float JumpForce;
-
-    public float Gravity = 20;
-
-    float JumpAscendDuration;
-    public float MaxJumpAscendDuration;
-
     bool PreviousAttack;
 
     public float MaxAttackDuration;
@@ -34,27 +22,23 @@ public class Fighter : MonoBehaviour
     public int ChargeDirection; //0= up, 1 = right, 2 = down, 3 = left;
     public int PreviousChargeDirection;
 
-    public float JumpInterval;
-    public float JumpIntervalTimer;
-
     bool IsBlocking;
 
-    LineCastPhysicsScript FighterPhysics;
+    //LineCastPhysicsScript FighterPhysics;
 
     // Use this for initialization
     void Start()
     {
+        
         Brain = GetComponent<CharacterActions>();
-        FighterPhysics = GetComponent<LineCastPhysicsScript>();
-        FighterPhysics.Gravity = Gravity;
-        FighterPhysics.CurrentGravity = Gravity;
+        
     }
 
     //For isdownonces and preparations for FixedUpdate;
     void PreUpdate()
     {
 
-        PreviousJump = Brain.jump;
+        
         if (Brain.upAttack || Brain.downAttack || Brain.leftAttack || Brain.rightAttack)
         {
             ChargeDuration += Time.deltaTime;
@@ -65,144 +49,16 @@ public class Fighter : MonoBehaviour
             ChargeDuration = 0;
             PreviousAttack = false;
         }
-        Brain.UpdateCommands();
+        //Brain.UpdateCommands();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         PreUpdate();
-
-        Movement();
-
         Combat();
-
-        FighterPhysics.CalculateNextYVelocity(Footing);
-        FighterPhysics.DownPhysics();
-        if (!FighterPhysics.Grounded)
-        {
-            if (FighterPhysics.UpPhysics())
-            {
-                JumpAscendDuration = 0;
-                FighterPhysics.CurrentGravity = Gravity;
-            }
-            else
-            {
-                FighterPhysics.GravityStuff();
-            }
-        }
-        FighterPhysics.VelocityUpdate();
     }
 
-    void Movement()
-    {
-        if (Brain.moveLeft)
-        {
-            //Body.AddForce(-RunningAcceleration * Vector2.right);
-            FighterPhysics.velocity -= Vector2.right * Time.deltaTime * RunningAcceleration;
-        }
-        if (Brain.moveRight)
-        {
-            //Body.AddForce(RunningAcceleration * Vector2.right);
-            FighterPhysics.velocity += Vector2.right * Time.deltaTime * RunningAcceleration;
-        }
-        if(Brain.moveDown)
-        {
-            FighterPhysics.DodgingPlatforms = true;
-        }
-        else FighterPhysics.DodgingPlatforms = false;
-
-        Jumping();
-
-        Friction();
-    }
-
-    void Jumping()
-    {
-        if (Brain.jump && !PreviousJump)
-        {
-            JumpIntervalTimer = JumpInterval;
-        }
-        else if (!Brain.jump)
-        {
-            JumpIntervalTimer = 0;
-        }
-
-        if (JumpIntervalTimer > 0)
-        {
-            if (FighterPhysics.Grounded)
-            {
-                JumpIntervalTimer = 0;
-
-                //Body.AddForce(JumpForce * Vector2.up);
-                //Body.gravityScale = 0;
-                FighterPhysics.velocity += Vector2.up * JumpForce;
-                FighterPhysics.CurrentGravity = 0;
-                JumpAscendDuration = MaxJumpAscendDuration;
-            }
-
-            JumpIntervalTimer -= Time.deltaTime;
-        }
-
-        if (JumpAscendDuration > 0)
-        {
-            JumpAscendDuration -= Time.deltaTime;
-            if (JumpAscendDuration <= 0 || !Brain.jump)
-            {
-                //Body.gravityScale = PersonalGravityScale;
-                FighterPhysics.CurrentGravity = Gravity;
-                JumpAscendDuration = 0;
-            }
-        }
-    }
-
-    void Friction()
-    {
-        if (FighterPhysics.Grounded || Brain.moveLeft || Brain.moveRight)
-        {
-            float FrictionForceX = -Footing * FighterPhysics.velocity.x /** Body.mass * Body.velocity.x*/;
-            if (FrictionForceX > RunningAcceleration) FrictionForceX = RunningAcceleration;
-            //Body.AddForce(FrictionForceX * Vector2.right); //Friction
-            FighterPhysics.velocity += FrictionForceX * Time.deltaTime * Vector2.right;
-
-            
-        }
-        if (JumpAscendDuration <= 0)
-        {
-            float FrictionForceY = -Footing * FighterPhysics.velocity.y;
-            FighterPhysics.velocity += FrictionForceY * Time.deltaTime * Vector2.up/2;
-        }
-    }
-
-    //void OnCollisionStay2D(Collision2D other)
-    //{
-    //    if (transform.position.y - GetComponent<BoxCollider2D>().size.y / 2 > other.transform.position.y + other.transform.localScale.y * other.gameObject.GetComponent<BoxCollider2D>().size.y / 2
-    //            && transform.position.x + GetComponent<BoxCollider2D>().size.x / 2 > other.transform.position.x - other.transform.localScale.x * other.gameObject.GetComponent<BoxCollider2D>().size.x / 2
-    //            && transform.position.x - GetComponent<BoxCollider2D>().size.x / 2 < other.transform.position.x + other.transform.localScale.x * other.gameObject.GetComponent<BoxCollider2D>().size.x / 2)
-    //    {
-    //        if (/*Body.velocity.y <= 0*/FighterPhysics.velocity.y <= 0)
-    //        {
-    //            JumpAscendDuration = MaxJumpAscendDuration;
-    //            Grounded = true;
-    //        }
-    //    }
-
-    //    //kollision under mark
-    //    if (transform.position.y + GetComponent<BoxCollider2D>().size.y / 2 < other.transform.position.y - other.transform.localScale.y / 2 * other.gameObject.GetComponent<BoxCollider2D>().size.y / 2
-    //        && transform.position.x + GetComponent<BoxCollider2D>().size.x / 2 > other.transform.position.x - other.transform.localScale.x * other.gameObject.GetComponent<BoxCollider2D>().size.x / 2
-    //        && transform.position.x - GetComponent<BoxCollider2D>().size.x / 2 < other.transform.position.x + other.transform.localScale.x * other.gameObject.GetComponent<BoxCollider2D>().size.x / 2)
-    //    {
-    //        JumpAscendDuration = 0;
-    //        //Body.gravityScale = PersonalGravityScale;
-    //        FighterPhysics.Gravity = 9;
-    //    }
-    //}
-
-    //void OnCollisionExit2D(Collision2D other)
-    //{
-
-    //    Grounded = false;
-
-    //}
+    
 
     void Combat()
     {
