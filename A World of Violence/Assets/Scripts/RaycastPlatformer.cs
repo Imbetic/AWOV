@@ -3,52 +3,51 @@ using System.Collections;
 
 public class RaycastPlatformer : MonoBehaviour
 {
+    //The controller
     CharacterActions Brain;
 
+    //Movement tweaking
     public bool BroClimb;
     public bool BroSwing;
     public int BonusJumps;
     public float Levitation;
     public float Quickfall;
-
-    bool PreviousBroSwinging = false;
-    bool Broswinging = false;
-    int BonusJumpCount;
-
     public float RunningAcceleration;
     public float Footing;
-
-    bool PreviousJump;
     public float JumpForce;
-
-    public bool Grounded;
-
-    public float playerheight;
-    public float playerwidth;
-
     public float Gravity = 20;
-    float CurrentGravity;
-
-    float JumpAscendDuration;
     public float MaxJumpAscendDuration;
 
-    public Vector2 velocity;
-
-    Vector2 temppos;
-
+    //Jumpingrelated
+    bool PreviousBroSwinging = false;
+    bool Broswinging = false;
+    int BonusJumpCount;   
+    bool PreviousJump; 
+    public bool Grounded;
+    float JumpAscendDuration;
     public float JumpInterval;
     public float JumpIntervalTimer;
 
+    //Collisionrelated
+    private float tempX;
+    private float tempY;
+    private bool offsetedup = false;
+    private bool offseteddown = false;
+    private bool offsetedx = false;
     public LayerMask GroundCollision;
     public LayerMask DodgePlatformsCollision;
     LayerMask CurrentLayer;
-
+    Vector2 temppos;
+    public bool DodgingPlatforms;
+    public float playerheight;
+    public float playerwidth;
+    
+    //Physics
+    float CurrentGravity;
+    public Vector2 velocity;
+    Vector2 ForceToAdd;
     float DeltaTime;
 
-    public bool DodgingPlatforms;
-
-    Vector2 ForceToAdd;
-    // Use this for initialization
     void Start()
     {
         //Time.timeScale = 0.1f;
@@ -61,24 +60,22 @@ public class RaycastPlatformer : MonoBehaviour
         PreviousJump = Brain.jump;
         DeltaTime = Time.deltaTime;
         if (DeltaTime > 0.04f) DeltaTime = 0.04f;
+
+        Brain.UpdateMovementCommands();
     }
 
     void Update()
     {
-        PreviousJump = Brain.jump;
-        DeltaTime = Time.deltaTime;
-        if (DeltaTime > 0.04f) DeltaTime = 0.04f;
-
-        Brain.UpdateMovementCommands();
+        PreUpdate();
 
         Movement();
         velocity += (ForceToAdd);
         ForceToAdd *= 0;
 
         velocity += -Vector2.up * CurrentGravity * DeltaTime;
-        if(JumpAscendDuration<=0 && Brain.jump)
+        if (JumpAscendDuration <= 0 && Brain.jump)
         {
-            velocity += Vector2.up* Levitation * DeltaTime;
+            velocity += Vector2.up * Levitation * DeltaTime;
         }
 
         Friction();
@@ -125,22 +122,7 @@ public class RaycastPlatformer : MonoBehaviour
         if (JumpIntervalTimer > 0)
         {
 
-            if (Grounded)
-            {
-                BonusJumpCount = BonusJumps;
-                JumpIntervalTimer = 0;
-                velocity += Vector2.up * JumpForce;
-                CurrentGravity = 0;
-                JumpAscendDuration = MaxJumpAscendDuration;
-            }
-            else if(BonusJumpCount > 0)
-            {
-                BonusJumpCount -= 1;
-                JumpIntervalTimer = 0;               
-                velocity = new Vector2(velocity.x, JumpForce);
-                CurrentGravity = 0;
-                JumpAscendDuration = MaxJumpAscendDuration;
-            }
+            Jump();
 
             JumpIntervalTimer -= DeltaTime;
         }
@@ -156,23 +138,44 @@ public class RaycastPlatformer : MonoBehaviour
         }
     }
 
+    void Jump()
+    {
+        if (Grounded)
+        {
+            //BonusJumpCount = BonusJumps;
+            JumpIntervalTimer = 0;
+            velocity += Vector2.up * JumpForce;
+            CurrentGravity = 0;
+            JumpAscendDuration = MaxJumpAscendDuration;
+        }
+        else if (BonusJumpCount > 0)
+        {
+            BonusJumpCount -= 1;
+            JumpIntervalTimer = 0;
+            velocity = new Vector2(velocity.x, JumpForce);
+            CurrentGravity = 0;
+            JumpAscendDuration = MaxJumpAscendDuration;
+        }
+    }
+
     void Friction()
     {
         if (Grounded || Brain.moveLeft || Brain.moveRight)
         {
-            float FrictionForceX = -Footing * velocity.x /** Body.mass * Body.velocity.x*/;
+            //x-friction
+            float FrictionForceX = -Footing * velocity.x;
             if (FrictionForceX > RunningAcceleration) FrictionForceX = RunningAcceleration;
-            //Body.AddForce(FrictionForceX * Vector2.right); //Friction
             velocity += FrictionForceX * DeltaTime * Vector2.right;
         }
         if (velocity.y < 0)
         {
+            //y-friction
             float FrictionForceY = -Footing * velocity.y;
             velocity += FrictionForceY * DeltaTime * Vector2.up / 3;
         }
     }
 
-    public void Positioning()
+    void PrePositioning()
     {
         if (DodgingPlatforms)
         {
@@ -180,277 +183,349 @@ public class RaycastPlatformer : MonoBehaviour
         }
         else CurrentLayer = GroundCollision;
 
-        if (velocity.x != 0 || velocity.y != 0)
+        PreviousBroSwinging = Broswinging;
+        Broswinging = false;
+
+        offsetedup = false;
+        offseteddown = false;
+        offsetedx = false;
+        Grounded = false;
+    }
+
+    public void Positioning() //Called after all movement to adjust position by collisions
+    {
+        PrePositioning();
+
+        temppos = new Vector2(transform.position.x, transform.position.y + playerheight / 2);
+        RaycastHit2D miduprayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
+
+        temppos = new Vector2(transform.position.x, transform.position.y - playerheight / 2);
+        RaycastHit2D middownrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, CurrentLayer);
+
+        temppos = new Vector2(transform.position.x - playerwidth / 2, transform.position.y);
+        RaycastHit2D midleftrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
+
+        temppos = new Vector2(transform.position.x + playerwidth / 2, transform.position.y);
+        RaycastHit2D midrightrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
+
+        MidSideCollisionCheck(miduprayinfo, middownrayinfo, midleftrayinfo, midrightrayinfo);
+
+        CornerCollisionCheck(miduprayinfo, middownrayinfo, midleftrayinfo, midrightrayinfo);
+
+        PostPositioning();
+    }
+
+    void MidSideCollisionCheck(RaycastHit2D miduprayinfo, RaycastHit2D middownrayinfo, RaycastHit2D midleftrayinfo, RaycastHit2D midrightrayinfo)
+    {
+        if (miduprayinfo.collider != null && velocity.y > 0)
         {
-            PreviousBroSwinging = Broswinging;
-            Broswinging = false;
+            MidUpCollision(miduprayinfo.distance);
+        }
 
-            bool offsetedup = false;
-            bool offseteddown = false;
-            bool offsetedx = false;
-            Grounded = false;
+        if (middownrayinfo.collider != null && velocity.y < 0)
+        {
+            MidDownCollision(middownrayinfo.distance);
+        }
 
+        if (midrightrayinfo.collider != null && velocity.x > 0)
+        {
+            MidRightCollision(midrightrayinfo.distance);
+        }
 
-            temppos = new Vector2(transform.position.x, transform.position.y + playerheight / 2);
-            RaycastHit2D miduprayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
+        if (midleftrayinfo.collider != null && velocity.x < 0)
+        {
+            MidLeftCollision(midleftrayinfo.distance);
+        }
+    }
 
-            temppos = new Vector2(transform.position.x, transform.position.y - playerheight / 2);
-            RaycastHit2D middownrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, CurrentLayer);
+    void CornerCollisionCheck(RaycastHit2D miduprayinfo, RaycastHit2D middownrayinfo, RaycastHit2D midleftrayinfo, RaycastHit2D midrightrayinfo)
+    {
+        if (miduprayinfo.collider == null && midleftrayinfo.collider == null && (velocity.x < 0 || velocity.y > 0))
+        {
+            UpLeftCollisionCheck();
+        }
 
-            temppos = new Vector2(transform.position.x - playerwidth / 2, transform.position.y);
-            RaycastHit2D midleftrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
+        if (miduprayinfo.collider == null && midrightrayinfo.collider == null && (velocity.x > 0 || velocity.y > 0))
+        {
+            UpRightCollisionCheck();
+        }
 
-            temppos = new Vector2(transform.position.x + playerwidth / 2, transform.position.y);
-            RaycastHit2D midrightrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
+        if (middownrayinfo.collider == null && midleftrayinfo.collider == null && (velocity.x < 0 || velocity.y < 0))
+        {
+            DownLeftCollisionCheck();
+        }
 
-            if (miduprayinfo.collider != null && velocity.y > 0)
+        if (middownrayinfo.collider == null && midrightrayinfo.collider == null && (velocity.x > 0 || velocity.y < 0))
+        {
+            DownRightCollisionCheck();
+        }
+    }
+
+    void MidUpCollision(float raydist)
+    {
+        transform.position += new Vector3(0, raydist * velocity.normalized.y, 0);
+        offseteddown = true;
+        JumpAscendDuration = 0;
+        CurrentGravity = Gravity;
+        velocity = new Vector2(velocity.x, 0);
+    }
+
+    void MidDownCollision(float raydist)
+    {
+        transform.position += new Vector3(0, raydist * velocity.normalized.y, 0);
+        offsetedup = true;
+        Grounded = true;
+        BonusJumpCount = BonusJumps;
+        velocity = new Vector2(velocity.x, 0);
+    }
+
+    void MidRightCollision(float raydist)
+    {
+        transform.position += new Vector3(raydist * velocity.normalized.x, 0, 0);
+        velocity = new Vector2(0, velocity.y);
+        offsetedx = true;
+    }
+
+    void MidLeftCollision(float raydist)
+    {
+        transform.position += new Vector3(raydist * velocity.normalized.x, 0, 0);
+        velocity = new Vector2(0, velocity.y);
+        offsetedx = true;
+    }
+
+    void UpLeftCollisionCheck()
+    {
+        temppos = new Vector2(transform.position.x - playerwidth / 2, transform.position.y + playerheight / 2);
+        RaycastHit2D upleftrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
+
+        if (upleftrayinfo.collider != null)
+        {
+            tempX = upleftrayinfo.point.x - upleftrayinfo.collider.transform.position.x;
+            tempY = upleftrayinfo.point.y - upleftrayinfo.collider.transform.position.y;
+
+            UpLeftCollision(upleftrayinfo);
+        }
+    }
+
+    void UpLeftCollision(RaycastHit2D upleftrayinfo)
+    {
+        if (Mathf.Abs(tempX) > Mathf.Abs(tempY))
+        {
+            if (tempX > 0 && velocity.x < 0 && !offsetedx)
             {
-                transform.position += new Vector3(0, miduprayinfo.distance * velocity.normalized.y, 0);
-                offseteddown = true;
-                JumpAscendDuration = 0;
-                CurrentGravity = Gravity;
-                velocity = new Vector2(velocity.x, 0);
+                transform.position += new Vector3(upleftrayinfo.distance * velocity.normalized.x, 0, 0);
+                //OFFSET RIGHT
+                velocity = new Vector2(0, velocity.y);
+                offsetedx = true;
             }
-
-            if (middownrayinfo.collider != null && velocity.y < 0)
+        }
+        else
+        {
+            if (tempY < 0 && !offseteddown && velocity.y > 0)
             {
-                transform.position += new Vector3(0, middownrayinfo.distance * velocity.normalized.y, 0);
+
+                transform.position += new Vector3(0, upleftrayinfo.distance * velocity.normalized.y, 0);
+                //OFFSET DOWN
+                offseteddown = true;
+                //JumpAscendDuration = 0;
+                //CurrentGravity = Gravity;
+                //velocity = new Vector2(velocity.x, 0);
+                if (Brain.jump && !Brain.moveLeft && BroSwing)
+                {
+                    Broswinging = true;
+                    Grounded = true;
+                    BonusJumpCount = BonusJumps;
+                    velocity = new Vector2(5, 0);
+                    CurrentGravity = 0;
+                }
+                else
+                {
+                    JumpAscendDuration = 0;
+                    CurrentGravity = Gravity;
+                    velocity = new Vector2(velocity.x, 0);
+                }
+
+            }
+        }
+    }
+
+    void UpRightCollisionCheck()
+    {
+        temppos = new Vector2(transform.position.x + playerwidth / 2, transform.position.y + playerheight / 2);
+        RaycastHit2D uprightrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
+
+        if (uprightrayinfo.collider != null)
+        {
+
+            tempX = uprightrayinfo.point.x - uprightrayinfo.collider.transform.position.x;
+            tempY = uprightrayinfo.point.y - uprightrayinfo.collider.transform.position.y;
+
+            UpRightCollision(uprightrayinfo);
+        }
+    }
+
+    void UpRightCollision(RaycastHit2D uprightrayinfo)
+    {
+        if (Mathf.Abs(tempX) > Mathf.Abs(tempY))
+        {
+            if (tempX < 0 && !offsetedx && velocity.x > 0)
+            {
+                //OFFSET LEFT
+                transform.position += new Vector3(uprightrayinfo.distance * velocity.normalized.x, 0, 0);
+                velocity = new Vector2(0, velocity.y);
+                offsetedx = true;
+            }
+        }
+        else
+        {
+            if (tempY < 0 && !offseteddown && velocity.y > 0)
+            {
+                transform.position += new Vector3(0, uprightrayinfo.distance * velocity.normalized.y, 0);
+                //OFFSET DOWN
+                offseteddown = true;
+                if (Brain.jump && !Brain.moveRight && BroSwing)
+                {
+                    Broswinging = true;
+                    Grounded = true;
+                    BonusJumpCount = BonusJumps;
+                    velocity = new Vector2(-5, 0);
+                    CurrentGravity = 0;
+                }
+                else
+                {
+                    JumpAscendDuration = 0;
+                    CurrentGravity = Gravity;
+                    velocity = new Vector2(velocity.x, 0);
+                }
+            }
+        }
+    }
+
+    void DownLeftCollisionCheck()
+    {
+        temppos = new Vector2(transform.position.x - playerwidth / 2, transform.position.y - playerheight / 2);
+        RaycastHit2D downleftrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, CurrentLayer);
+
+        if (downleftrayinfo.collider != null)
+        {
+
+            tempX = downleftrayinfo.point.x - downleftrayinfo.collider.transform.position.x;
+            tempY = downleftrayinfo.point.y - downleftrayinfo.collider.transform.position.y;
+
+            DownLeftCollision(downleftrayinfo);
+
+        }
+    }
+
+    void DownLeftCollision(RaycastHit2D downleftrayinfo)
+    {
+        if (Mathf.Abs(tempX) > Mathf.Abs(tempY))
+        {
+            if (tempX > 0 && !offsetedx && velocity.x < 0)
+            {
+                //OFFSET RIGHT
+                if (downleftrayinfo.collider.gameObject.layer != 1 << 9)
+                {
+                    transform.position += new Vector3(downleftrayinfo.distance * velocity.normalized.x, 0, 0);
+                }
+
+                if (Brain.moveLeft && JumpAscendDuration <= 0 && BroClimb)
+                {
+                    velocity = new Vector2(0, 4);
+                }
+                else
+                {
+                    velocity = new Vector2(0, velocity.y);
+                }
+                offsetedx = true;
+            }
+        }
+        else
+        {
+            if (tempY > 0 && velocity.y < 0 && !offsetedup)
+            {
+                transform.position += new Vector3(0, downleftrayinfo.distance * velocity.normalized.y, 0);
                 //OFFSET UP
                 offsetedup = true;
                 Grounded = true;
+                BonusJumpCount = BonusJumps;
                 velocity = new Vector2(velocity.x, 0);
-            }
 
-            if (midrightrayinfo.collider != null && velocity.x > 0)
-            {
-                transform.position += new Vector3(midrightrayinfo.distance * velocity.normalized.x, 0, 0);
-                velocity = new Vector2(0, velocity.y);
-                offsetedx = true;
-            }
-
-            if (midleftrayinfo.collider != null && velocity.x < 0)
-            {
-                transform.position += new Vector3(midleftrayinfo.distance * velocity.normalized.x, 0, 0);
-                velocity = new Vector2(0, velocity.y);
-                offsetedx = true;
-            }
-
-            if (miduprayinfo.collider == null && midleftrayinfo.collider == null && (velocity.x < 0 || velocity.y > 0))
-            {
-                temppos = new Vector2(transform.position.x - playerwidth / 2, transform.position.y + playerheight / 2);
-                RaycastHit2D upleftrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
-
-                if (upleftrayinfo.collider != null)
-                {
-                    float tempX;
-                    float tempY;
-
-                    tempX = upleftrayinfo.point.x - upleftrayinfo.collider.transform.position.x;
-                    tempY = upleftrayinfo.point.y - upleftrayinfo.collider.transform.position.y;
-
-                    if (Mathf.Abs(tempX) > Mathf.Abs(tempY))
-                    {
-                        if (tempX > 0 && velocity.x < 0 && !offsetedx)
-                        {
-                            transform.position += new Vector3(upleftrayinfo.distance * velocity.normalized.x, 0, 0);
-                            //OFFSET RIGHT
-                            velocity = new Vector2(0, velocity.y);
-                            offsetedx = true;
-                        }
-                    }
-                    else
-                    {
-                        if (tempY < 0 && !offseteddown && velocity.y > 0)
-                        {
-
-                            transform.position += new Vector3(0, upleftrayinfo.distance * velocity.normalized.y, 0);
-                            //OFFSET DOWN
-                            offseteddown = true;
-                            //JumpAscendDuration = 0;
-                            //CurrentGravity = Gravity;
-                            //velocity = new Vector2(velocity.x, 0);
-                            if (Brain.jump && !Brain.moveLeft && BroSwing)
-                            {
-                                Broswinging = true;
-                                Grounded = true;
-                                velocity = new Vector2(5, 0);
-                                CurrentGravity = 0;
-                            }
-                            else
-                            {
-                                JumpAscendDuration = 0;
-                                CurrentGravity = Gravity;
-                                velocity = new Vector2(velocity.x, 0);
-                            }
-                            
-                        }
-                    }
-                }
-            }
-
-            if (miduprayinfo.collider == null && midrightrayinfo.collider == null && (velocity.x > 0 || velocity.y > 0))
-            {
-                temppos = new Vector2(transform.position.x + playerwidth / 2, transform.position.y + playerheight / 2);
-                RaycastHit2D uprightrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
-
-                if (uprightrayinfo.collider != null)
-                {
-                    float tempX;
-                    float tempY;
-
-                    tempX = uprightrayinfo.point.x - uprightrayinfo.collider.transform.position.x;
-                    tempY = uprightrayinfo.point.y - uprightrayinfo.collider.transform.position.y;
-
-                    if (Mathf.Abs(tempX) > Mathf.Abs(tempY))
-                    {
-                        if (tempX < 0 && !offsetedx && velocity.x > 0)
-                        {
-                            //OFFSET LEFT
-                            transform.position += new Vector3(uprightrayinfo.distance * velocity.normalized.x, 0, 0);
-                            velocity = new Vector2(0, velocity.y);
-                            offsetedx = true;
-                        }
-                    }
-                    else
-                    {
-                        if (tempY < 0 && !offseteddown && velocity.y > 0)
-                        {
-                            transform.position += new Vector3(0, uprightrayinfo.distance * velocity.normalized.y, 0);
-                            //OFFSET DOWN
-                            offseteddown = true;
-                            if (Brain.jump && !Brain.moveRight && BroSwing)
-                            {
-                                Broswinging = true;
-                                Grounded = true;
-                                velocity = new Vector2(-5, 0);
-                                CurrentGravity = 0;
-                            }
-                            else
-                            {
-                                JumpAscendDuration = 0;
-                                CurrentGravity = Gravity;
-                                velocity = new Vector2(velocity.x, 0);
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (middownrayinfo.collider == null && midleftrayinfo.collider == null && (velocity.x < 0 || velocity.y < 0))
-            {
-                temppos = new Vector2(transform.position.x - playerwidth / 2, transform.position.y - playerheight / 2);
-                RaycastHit2D downleftrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, CurrentLayer);
-
-                if (downleftrayinfo.collider != null)
-                {
-
-                    float tempX;
-                    float tempY;
-
-                    tempX = downleftrayinfo.point.x - downleftrayinfo.collider.transform.position.x;
-                    tempY = downleftrayinfo.point.y - downleftrayinfo.collider.transform.position.y;
-
-                    if (Mathf.Abs(tempX) > Mathf.Abs(tempY))
-                    {
-                        if (tempX > 0 && !offsetedx && velocity.x < 0)
-                        {
-                            //OFFSET RIGHT
-                            if (downleftrayinfo.collider.gameObject.layer != 1 << 9)
-                            {
-                                transform.position += new Vector3(downleftrayinfo.distance * velocity.normalized.x, 0, 0);
-                            }
-                            
-                            if (Brain.moveLeft && JumpAscendDuration <= 0 && BroClimb)
-                            {
-                                velocity = new Vector2(0, 4);
-                            }
-                            else
-                            {
-                                velocity = new Vector2(0, velocity.y);
-                            }
-                            offsetedx = true;
-                        }
-                    }
-                    else
-                    {
-                        if (tempY > 0 && velocity.y < 0 && !offsetedup)
-                        {
-                            transform.position += new Vector3(0, downleftrayinfo.distance * velocity.normalized.y, 0);
-                            //OFFSET UP
-                            offsetedup = true;
-                            Grounded = true;
-                            velocity = new Vector2(velocity.x, 0);
-
-                        }
-                    }
-
-                }
-            }
-
-            if (middownrayinfo.collider == null && midrightrayinfo.collider == null && (velocity.x > 0 || velocity.y < 0))
-            {
-                temppos = new Vector2(transform.position.x + playerwidth / 2, transform.position.y - playerheight / 2);
-                RaycastHit2D downrightrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, CurrentLayer);
-
-                if (downrightrayinfo.collider != null)
-                {
-                    float tempX;
-                    float tempY;
-
-                    tempX = downrightrayinfo.point.x - downrightrayinfo.collider.transform.position.x;
-                    tempY = downrightrayinfo.point.y - downrightrayinfo.collider.transform.position.y;
-
-                    if (Mathf.Abs(tempX) > Mathf.Abs(tempY))
-                    {
-                        if (tempX < 0 && !offsetedx && velocity.x > 0)
-                        {
-                            //OFFSET LEFT
-                            if (downrightrayinfo.collider.gameObject.layer != 1 << 9)
-                            {
-                                transform.position += new Vector3(downrightrayinfo.distance * velocity.normalized.x, 0, 0);
-                            }
-
-                            if (Brain.moveRight && JumpAscendDuration <= 0 && BroClimb)
-                            {
-                                velocity = new Vector2(0, 4);
-                            }
-                            else
-                            {
-                                velocity = new Vector2(0, velocity.y);
-                            }
-
-                            offsetedx = true;
-
-                        }
-                    }
-                    else
-                    {
-                        if (tempY > 0 && !offsetedup && velocity.y < 0)
-                        {
-                            transform.position += new Vector3(0, downrightrayinfo.distance * velocity.normalized.y, 0);
-                            //OFFSET UP
-                            Grounded = true;
-                            offsetedup = true;
-                            velocity = new Vector2(velocity.x, 0);
-
-                        }
-                    }
-                }
-            }
-            if(PreviousBroSwinging && !Broswinging)
-            {
-                Grounded = true;
-                JumpIntervalTimer = JumpInterval;
-                velocity = new Vector2(velocity.x, 0);
-                //velocity = new Vector2(velocity.x, 10);
-            }
-            transform.position += new Vector3(velocity.x, velocity.y, 0) * DeltaTime;
-            if(Broswinging)
-            {
-                velocity = new Vector2(velocity.x, 10);
             }
         }
+    }
 
+    void DownRightCollisionCheck()
+    {
+        temppos = new Vector2(transform.position.x + playerwidth / 2, transform.position.y - playerheight / 2);
+        RaycastHit2D downrightrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, CurrentLayer);
+
+        if (downrightrayinfo.collider != null)
+        {
+            tempX = downrightrayinfo.point.x - downrightrayinfo.collider.transform.position.x;
+            tempY = downrightrayinfo.point.y - downrightrayinfo.collider.transform.position.y;
+
+            DownRightCollision(downrightrayinfo);
+        }
+    }
+
+    void DownRightCollision(RaycastHit2D downrightrayinfo)
+    {
+        if (Mathf.Abs(tempX) > Mathf.Abs(tempY))
+        {
+            if (tempX < 0 && !offsetedx && velocity.x > 0)
+            {
+                //OFFSET LEFT
+                if (downrightrayinfo.collider.gameObject.layer != 1 << 9)
+                {
+                    transform.position += new Vector3(downrightrayinfo.distance * velocity.normalized.x, 0, 0);
+                }
+
+                if (Brain.moveRight && JumpAscendDuration <= 0 && BroClimb)
+                {
+                    velocity = new Vector2(0, 4);
+                }
+                else
+                {
+                    velocity = new Vector2(0, velocity.y);
+                }
+
+                offsetedx = true;
+
+            }
+        }
+        else
+        {
+            if (tempY > 0 && !offsetedup && velocity.y < 0)
+            {
+                transform.position += new Vector3(0, downrightrayinfo.distance * velocity.normalized.y, 0);
+                //OFFSET UP
+                Grounded = true;
+                BonusJumpCount = BonusJumps;
+                offsetedup = true;
+                velocity = new Vector2(velocity.x, 0);
+
+            }
+        }
+    }
+
+    void PostPositioning()
+    {
+        if (PreviousBroSwinging && !Broswinging)
+        {
+            Grounded = true;
+            BonusJumpCount = BonusJumps;
+            JumpIntervalTimer = JumpInterval;
+            velocity = new Vector2(velocity.x, 0);
+            //velocity = new Vector2(velocity.x, 10);
+        }
+
+        transform.position += new Vector3(velocity.x, velocity.y, 0) * DeltaTime;
+        
+        if (Broswinging)
+        {
+            velocity = new Vector2(velocity.x, 10);
+        }
     }
 
     void AddForce(Vector2 force)
