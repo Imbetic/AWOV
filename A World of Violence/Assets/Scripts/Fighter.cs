@@ -18,6 +18,7 @@ public class Fighter : MonoBehaviour
     public float MaxAttackDuration;
     float AttackDuration;
     float DrawbackDuration;
+    float AttackDelayTimer;
 
     public float ChargeDuration;
 
@@ -34,7 +35,7 @@ public class Fighter : MonoBehaviour
         Body = GetComponent<RaycastPlatformer>();
         Brain = GetComponent<CharacterActions>();
         Brain.UpdateCombatCommands();
-        
+        CurrentAttack = Weapon.GetComponent<WeaponScript>().FrontAttack1;
     }
 
     //For isdownonces and preparations for FixedUpdate;
@@ -71,312 +72,311 @@ public class Fighter : MonoBehaviour
 
     void Attacking()
     {
-        if (AttackDuration > 0)
+        if (AttackDelayTimer > 0)
         {
-            AttackDuration -= Time.deltaTime;
-            if (AttackDuration <= 0)
-            {
-                CurrentAttack.SetActive(false);
-                CurrentAttack = null;
-            }
-
-        }
-        if (DrawbackDuration > 0)
-        {
-            DrawbackDuration -= Time.deltaTime;
-        }
-        else if(Brain.block)
-        {
-            ChargeDuration = 0;
+            
+                AttackDelayTimer -= Time.deltaTime;
+                if (AttackDelayTimer <= 0)
+                {
+                    CurrentAttack.SetActive(true);
+                    CurrentAttack.GetComponent<BoxCollider2D>().enabled = true;
+                    AttackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDuration;
+                    DrawbackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDrawBack;
+                }
+            
         }
         else
         {
-            GameObject tempwep;
-            if (Weapon != null)
-            {
-                tempwep = Weapon;
-            }
-            else tempwep = Unarmed;
 
-            if (Brain.upAttack)
+
+            if (AttackDuration > 0)
             {
-                if (!Brain.PreviousupAttack)
+                AttackDuration -= Time.deltaTime;
+                if (AttackDuration <= 0)
                 {
-                    PreviousChargeDirection = ChargeDirection;
-                    ChargeDirection = 0;
+                    CurrentAttack.SetActive(false);
+                    //CurrentAttack = null;
                 }
 
-                if (!PreviousAttack)
-                {
-                    CurrentAttack = tempwep.GetComponent<WeaponScript>().UpAttack1;
-                    CurrentAttack.SetActive(true);
-                    AttackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDuration;
-                    DrawbackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDrawBack;
-                }
             }
             else
             {
-                if (ChargeDirection == 0)
+                if (DrawbackDuration > 0)
                 {
-
-                    if (PreviousChargeDirection == 1 && Brain.rightAttack)
-                    {
-                        ChargeDirection = 1;
-                    }
-                    else if (PreviousChargeDirection == 2 && Brain.downAttack)
-                    {
-                        ChargeDirection = 2;
-                    }
-                    else if (PreviousChargeDirection == 3 && Brain.leftAttack)
-                    {
-                        ChargeDirection = 3;
-                    }
-                    else
-                    {
-                        if (Brain.rightAttack)
-                        {
-                            ChargeDirection = 1;
-                        }
-                        else if (Brain.downAttack)
-                        {
-                            ChargeDirection = 2;
-                        }
-                        else if (Brain.leftAttack)
-                        {
-                            ChargeDirection = 3;
-                        }
-                        else
-                        {
-                            if (ChargeDuration > tempwep.GetComponent<WeaponScript>().Attack3ChargeThreshold)
-                            {
-                                CurrentAttack = tempwep.GetComponent<WeaponScript>().UpAttack3;
-                                CurrentAttack.SetActive(true);
-                                AttackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDuration;
-                                DrawbackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDrawBack;
-                            }
-                            else if (ChargeDuration > tempwep.GetComponent<WeaponScript>().Attack2ChargeThreshold)
-                            {
-                                CurrentAttack = tempwep.GetComponent<WeaponScript>().UpAttack2;
-                                CurrentAttack.SetActive(true);
-                                AttackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDuration;
-                                DrawbackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDrawBack;
-                            }
-                            ChargeDuration = 0;
-                        }
-                    }
-                    PreviousChargeDirection = 0;
+                    DrawbackDuration -= Time.deltaTime;
                 }
-            }
-
-            if (Brain.downAttack)
-            {
-                if (!Brain.PreviousdownAttack)
+                else if (Brain.block)
                 {
-                    PreviousChargeDirection = ChargeDirection;
-                    ChargeDirection = 2;
+                    ChargeDuration = 0;
                 }
-
-                if (!PreviousAttack)
+                else
                 {
-                    CurrentAttack = tempwep.GetComponent<WeaponScript>().DownAttack1;
-                    CurrentAttack.SetActive(true);
-                    AttackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDuration;
-                    DrawbackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDrawBack;
-                }
-            }
-            else
-            {
-                if (ChargeDirection == 2)
-                {
+                    GameObject tempwep;
+                    if (Weapon != null)
+                    {
+                        tempwep = Weapon;
+                    }
+                    else tempwep = Unarmed;
 
-                    if (PreviousChargeDirection == 1 && Brain.rightAttack)
+                    if (Brain.upAttack)
                     {
-                        ChargeDirection = 1;
-                    }
-                    else if (PreviousChargeDirection == 0 && Brain.upAttack)
-                    {
-                        ChargeDirection = 0;
-                    }
-                    else if (PreviousChargeDirection == 3 && Brain.leftAttack)
-                    {
-                        ChargeDirection = 3;
-                    }
-                    else
-                    {
-                        if (Brain.rightAttack)
+                        if (!Brain.PreviousupAttack)
                         {
-                            ChargeDirection = 1;
-                        }
-                        else if (Brain.upAttack)
-                        {
+                            PreviousChargeDirection = ChargeDirection;
                             ChargeDirection = 0;
                         }
-                        else if (Brain.leftAttack)
+
+                        if (!PreviousAttack)
                         {
-                            ChargeDirection = 3;
+                            CurrentAttack = tempwep.GetComponent<WeaponScript>().UpAttack1;
+                            AttackDelayTimer = CurrentAttack.GetComponent<AttackScript>().AttackDelay;
+
                         }
-                        else
-                        {
-                            if (ChargeDuration > tempwep.GetComponent<WeaponScript>().Attack3ChargeThreshold)
-                            {
-                                CurrentAttack = tempwep.GetComponent<WeaponScript>().DownAttack3;
-                                CurrentAttack.SetActive(true);
-                                AttackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDuration;
-                                DrawbackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDrawBack;
-                            }
-                            else if (ChargeDuration > tempwep.GetComponent<WeaponScript>().Attack2ChargeThreshold)
-                            {
-                                CurrentAttack = tempwep.GetComponent<WeaponScript>().DownAttack2;
-                                CurrentAttack.SetActive(true);
-                                AttackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDuration;
-                                DrawbackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDrawBack;
-                            }
-                            ChargeDuration = 0;
-                        }
-                    }
-                    PreviousChargeDirection = 2;
-
-                }
-            }
-
-            if (Brain.leftAttack)
-            {
-                if (!Brain.PreviousleftAttack)
-                {
-                    PreviousChargeDirection = ChargeDirection;
-                    ChargeDirection = 3;
-                }
-
-                if (!PreviousAttack)
-                {
-                    CurrentAttack = tempwep.GetComponent<WeaponScript>().BackAttack1;
-                    CurrentAttack.SetActive(true);
-                    AttackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDuration;
-                    DrawbackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDrawBack;
-                }
-            }
-            else
-            {
-                if (ChargeDirection == 3)
-                {
-
-                    if (PreviousChargeDirection == 1 && Brain.rightAttack)
-                    {
-                        ChargeDirection = 1;
-                    }
-                    else if (PreviousChargeDirection == 0 && Brain.upAttack)
-                    {
-                        ChargeDirection = 0;
-                    }
-                    else if (PreviousChargeDirection == 2 && Brain.downAttack)
-                    {
-                        ChargeDirection = 2;
                     }
                     else
                     {
-                        if (Brain.rightAttack)
+                        if (ChargeDirection == 0)
                         {
+
+                            if (PreviousChargeDirection == 1 && Brain.rightAttack)
+                            {
+                                ChargeDirection = 1;
+                            }
+                            else if (PreviousChargeDirection == 2 && Brain.downAttack)
+                            {
+                                ChargeDirection = 2;
+                            }
+                            else if (PreviousChargeDirection == 3 && Brain.leftAttack)
+                            {
+                                ChargeDirection = 3;
+                            }
+                            else
+                            {
+                                if (Brain.rightAttack)
+                                {
+                                    ChargeDirection = 1;
+                                }
+                                else if (Brain.downAttack)
+                                {
+                                    ChargeDirection = 2;
+                                }
+                                else if (Brain.leftAttack)
+                                {
+                                    ChargeDirection = 3;
+                                }
+                                else
+                                {
+                                    if (ChargeDuration > tempwep.GetComponent<WeaponScript>().Attack3ChargeThreshold)
+                                    {
+                                        CurrentAttack = tempwep.GetComponent<WeaponScript>().UpAttack3;
+                                        AttackDelayTimer = CurrentAttack.GetComponent<AttackScript>().AttackDelay;
+                                    }
+                                    else if (ChargeDuration > tempwep.GetComponent<WeaponScript>().Attack2ChargeThreshold)
+                                    {
+                                        CurrentAttack = tempwep.GetComponent<WeaponScript>().UpAttack2;
+                                        AttackDelayTimer = CurrentAttack.GetComponent<AttackScript>().AttackDelay;
+                                    }
+                                    ChargeDuration = 0;
+                                }
+                            }
+                            PreviousChargeDirection = 0;
+                        }
+                    }
+
+                    if (Brain.downAttack)
+                    {
+                        if (!Brain.PreviousdownAttack)
+                        {
+                            PreviousChargeDirection = ChargeDirection;
+                            ChargeDirection = 2;
+                        }
+
+                        if (!PreviousAttack && !Brain.upAttack)
+                        {
+                            CurrentAttack = tempwep.GetComponent<WeaponScript>().DownAttack1;
+                            AttackDelayTimer = CurrentAttack.GetComponent<AttackScript>().AttackDelay;
+                        }
+                    }
+                    else
+                    {
+                        if (ChargeDirection == 2)
+                        {
+
+                            if (PreviousChargeDirection == 1 && Brain.rightAttack)
+                            {
+                                ChargeDirection = 1;
+                            }
+                            else if (PreviousChargeDirection == 0 && Brain.upAttack)
+                            {
+                                ChargeDirection = 0;
+                            }
+                            else if (PreviousChargeDirection == 3 && Brain.leftAttack)
+                            {
+                                ChargeDirection = 3;
+                            }
+                            else
+                            {
+                                if (Brain.rightAttack)
+                                {
+                                    ChargeDirection = 1;
+                                }
+                                else if (Brain.upAttack)
+                                {
+                                    ChargeDirection = 0;
+                                }
+                                else if (Brain.leftAttack)
+                                {
+                                    ChargeDirection = 3;
+                                }
+                                else
+                                {
+                                    if (ChargeDuration > tempwep.GetComponent<WeaponScript>().Attack3ChargeThreshold)
+                                    {
+                                        CurrentAttack = tempwep.GetComponent<WeaponScript>().DownAttack3;
+                                        AttackDelayTimer = CurrentAttack.GetComponent<AttackScript>().AttackDelay;
+                                    }
+                                    else if (ChargeDuration > tempwep.GetComponent<WeaponScript>().Attack2ChargeThreshold)
+                                    {
+                                        CurrentAttack = tempwep.GetComponent<WeaponScript>().DownAttack2;
+                                        AttackDelayTimer = CurrentAttack.GetComponent<AttackScript>().AttackDelay;
+                                    }
+                                    ChargeDuration = 0;
+                                }
+                            }
+                            PreviousChargeDirection = 2;
+
+                        }
+                    }
+
+                    if (Brain.leftAttack)
+                    {
+                        if (!Brain.PreviousleftAttack)
+                        {
+                            PreviousChargeDirection = ChargeDirection;
+                            ChargeDirection = 3;
+                        }
+
+                        if (!PreviousAttack && !Brain.downAttack && !Brain.upAttack)
+                        {
+                            CurrentAttack = tempwep.GetComponent<WeaponScript>().BackAttack1;
+                            AttackDelayTimer = CurrentAttack.GetComponent<AttackScript>().AttackDelay;
+                        }
+                    }
+                    else
+                    {
+                        if (ChargeDirection == 3)
+                        {
+
+                            if (PreviousChargeDirection == 1 && Brain.rightAttack)
+                            {
+                                ChargeDirection = 1;
+                            }
+                            else if (PreviousChargeDirection == 0 && Brain.upAttack)
+                            {
+                                ChargeDirection = 0;
+                            }
+                            else if (PreviousChargeDirection == 2 && Brain.downAttack)
+                            {
+                                ChargeDirection = 2;
+                            }
+                            else
+                            {
+                                if (Brain.rightAttack)
+                                {
+                                    ChargeDirection = 1;
+                                }
+                                else if (Brain.upAttack)
+                                {
+                                    ChargeDirection = 0;
+                                }
+                                else if (Brain.downAttack)
+                                {
+                                    ChargeDirection = 2;
+                                }
+                                else
+                                {
+                                    if (ChargeDuration > tempwep.GetComponent<WeaponScript>().Attack3ChargeThreshold)
+                                    {
+                                        CurrentAttack = tempwep.GetComponent<WeaponScript>().BackAttack3;
+                                        AttackDelayTimer = CurrentAttack.GetComponent<AttackScript>().AttackDelay;
+                                    }
+                                    else if (ChargeDuration > tempwep.GetComponent<WeaponScript>().Attack2ChargeThreshold)
+                                    {
+                                        CurrentAttack = tempwep.GetComponent<WeaponScript>().BackAttack2;
+                                        AttackDelayTimer = CurrentAttack.GetComponent<AttackScript>().AttackDelay;
+                                    }
+
+                                    ChargeDuration = 0;
+                                }
+                            }
+                            PreviousChargeDirection = 3;
+                        }
+                    }
+
+                    if (Brain.rightAttack)
+                    {
+                        if (!Brain.PreviousrightAttack)
+                        {
+                            PreviousChargeDirection = ChargeDirection;
                             ChargeDirection = 1;
                         }
-                        else if (Brain.upAttack)
+
+                        if (!PreviousAttack && !Brain.downAttack && !Brain.upAttack && !Brain.leftAttack)
                         {
-                            ChargeDirection = 0;
+                            CurrentAttack = tempwep.GetComponent<WeaponScript>().FrontAttack1;
+                            AttackDelayTimer = CurrentAttack.GetComponent<AttackScript>().AttackDelay;
                         }
-                        else if (Brain.downAttack)
-                        {
-                            ChargeDirection = 2;
-                        }
-                        else
-                        {
-                            if (ChargeDuration > tempwep.GetComponent<WeaponScript>().Attack3ChargeThreshold)
-                            {
-                                CurrentAttack = tempwep.GetComponent<WeaponScript>().BackAttack3;
-                                CurrentAttack.SetActive(true);
-                                AttackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDuration;
-                                DrawbackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDrawBack;
-                            }
-                            else if (ChargeDuration > tempwep.GetComponent<WeaponScript>().Attack2ChargeThreshold)
-                            {
-                                CurrentAttack = tempwep.GetComponent<WeaponScript>().BackAttack2;
-                                CurrentAttack.SetActive(true);
-                                AttackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDuration;
-                                DrawbackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDrawBack;
-                            }
-
-                            ChargeDuration = 0;
-                        }
-                    }
-                    PreviousChargeDirection = 3;
-                }
-            }
-
-            if (Brain.rightAttack)
-            {
-                if (!Brain.PreviousrightAttack)
-                {
-                    PreviousChargeDirection = ChargeDirection;
-                    ChargeDirection = 1;
-                }
-
-                if (!PreviousAttack)
-                {
-                    CurrentAttack = tempwep.GetComponent<WeaponScript>().FrontAttack1;
-                    CurrentAttack.SetActive(true);
-                    AttackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDuration;
-                    DrawbackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDrawBack;
-                }
-            }
-            else
-            {
-                if (ChargeDirection == 1)
-                {
-
-                    if (PreviousChargeDirection == 3 && Brain.leftAttack)
-                    {
-                        ChargeDirection = 3;
-                    }
-                    else if (PreviousChargeDirection == 0 && Brain.upAttack)
-                    {
-                        ChargeDirection = 0;
-                    }
-                    else if (PreviousChargeDirection == 2 && Brain.downAttack)
-                    {
-                        ChargeDirection = 2;
                     }
                     else
                     {
-                        if (Brain.leftAttack)
+                        if (ChargeDirection == 1)
                         {
-                            ChargeDirection = 3;
-                        }
-                        else if (Brain.upAttack)
-                        {
-                            ChargeDirection = 0;
-                        }
-                        else if (Brain.downAttack)
-                        {
-                            ChargeDirection = 2;
-                        }
-                        else
-                        {
-                            if (ChargeDuration > tempwep.GetComponent<WeaponScript>().Attack3ChargeThreshold)
+
+                            if (PreviousChargeDirection == 3 && Brain.leftAttack)
                             {
-                                CurrentAttack = tempwep.GetComponent<WeaponScript>().FrontAttack3;
-                                CurrentAttack.SetActive(true);
-                                AttackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDuration;
-                                DrawbackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDrawBack;
+                                ChargeDirection = 3;
                             }
-                            else if (ChargeDuration > tempwep.GetComponent<WeaponScript>().Attack2ChargeThreshold)
+                            else if (PreviousChargeDirection == 0 && Brain.upAttack)
                             {
-                                CurrentAttack = tempwep.GetComponent<WeaponScript>().FrontAttack2;
-                                CurrentAttack.SetActive(true);
-                                AttackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDuration;
-                                DrawbackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDrawBack;
+                                ChargeDirection = 0;
                             }
-                            ChargeDuration = 0;
+                            else if (PreviousChargeDirection == 2 && Brain.downAttack)
+                            {
+                                ChargeDirection = 2;
+                            }
+                            else
+                            {
+                                if (Brain.leftAttack)
+                                {
+                                    ChargeDirection = 3;
+                                }
+                                else if (Brain.upAttack)
+                                {
+                                    ChargeDirection = 0;
+                                }
+                                else if (Brain.downAttack)
+                                {
+                                    ChargeDirection = 2;
+                                }
+                                else
+                                {
+                                    if (ChargeDuration > tempwep.GetComponent<WeaponScript>().Attack3ChargeThreshold)
+                                    {
+                                        CurrentAttack = tempwep.GetComponent<WeaponScript>().FrontAttack3;
+                                        AttackDelayTimer = CurrentAttack.GetComponent<AttackScript>().AttackDelay;
+                                    }
+                                    else if (ChargeDuration > tempwep.GetComponent<WeaponScript>().Attack2ChargeThreshold)
+                                    {
+                                        CurrentAttack = tempwep.GetComponent<WeaponScript>().FrontAttack2;
+                                        AttackDelayTimer = CurrentAttack.GetComponent<AttackScript>().AttackDelay;
+                                    }
+                                    ChargeDuration = 0;
+                                }
+                            }
+                            PreviousChargeDirection = 1;
                         }
                     }
-                    PreviousChargeDirection = 1;
+
                 }
             }
         }

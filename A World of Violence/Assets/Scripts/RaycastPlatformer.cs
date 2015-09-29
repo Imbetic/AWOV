@@ -24,7 +24,7 @@ public class RaycastPlatformer : MonoBehaviour
     int BonusJumpCount;   
     bool PreviousJump; 
     public bool Grounded;
-    float JumpAscendDuration;
+    public float JumpAscendDuration;
     public float JumpInterval;
     public float JumpIntervalTimer;
 
@@ -47,6 +47,8 @@ public class RaycastPlatformer : MonoBehaviour
     public Vector2 velocity;
     Vector2 ForceToAdd;
     float DeltaTime;
+
+    Vector2 rayDirection;
 
     void Start()
     {
@@ -95,11 +97,13 @@ public class RaycastPlatformer : MonoBehaviour
         {
             //Body.AddForce(-RunningAcceleration * Vector2.right);
             velocity -= Vector2.right * DeltaTime * RunningAcceleration;
+            //transform.localScale = new Vector3(-1, 1, 1);
         }
         if (Brain.moveRight)
         {
             //Body.AddForce(RunningAcceleration * Vector2.right);
             velocity += Vector2.right * DeltaTime * RunningAcceleration;
+            //transform.localScale = new Vector3(1, 1, 1);
         }
         if (Brain.moveDown)
         {
@@ -196,17 +200,19 @@ public class RaycastPlatformer : MonoBehaviour
     {
         PrePositioning();
 
+        rayDirection = velocity.normalized;
+
         temppos = new Vector2(transform.position.x, transform.position.y + playerheight / 2);
-        RaycastHit2D miduprayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
+        RaycastHit2D miduprayinfo = Physics2D.Raycast(temppos, rayDirection, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
 
         temppos = new Vector2(transform.position.x, transform.position.y - playerheight / 2);
-        RaycastHit2D middownrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, CurrentLayer);
+        RaycastHit2D middownrayinfo = Physics2D.Raycast(temppos, rayDirection, (velocity * DeltaTime).magnitude, CurrentLayer);
 
         temppos = new Vector2(transform.position.x - playerwidth / 2, transform.position.y);
-        RaycastHit2D midleftrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
+        RaycastHit2D midleftrayinfo = Physics2D.Raycast(temppos, rayDirection, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
 
         temppos = new Vector2(transform.position.x + playerwidth / 2, transform.position.y);
-        RaycastHit2D midrightrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
+        RaycastHit2D midrightrayinfo = Physics2D.Raycast(temppos, rayDirection, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
 
         MidSideCollisionCheck(miduprayinfo, middownrayinfo, midleftrayinfo, midrightrayinfo);
 
@@ -240,6 +246,7 @@ public class RaycastPlatformer : MonoBehaviour
 
     void CornerCollisionCheck(RaycastHit2D miduprayinfo, RaycastHit2D middownrayinfo, RaycastHit2D midleftrayinfo, RaycastHit2D midrightrayinfo)
     {
+        rayDirection = velocity.normalized;
         if (miduprayinfo.collider == null && midleftrayinfo.collider == null && (velocity.x < 0 || velocity.y > 0))
         {
             UpLeftCollisionCheck();
@@ -263,7 +270,7 @@ public class RaycastPlatformer : MonoBehaviour
 
     void MidUpCollision(float raydist)
     {
-        transform.position += new Vector3(0, raydist * velocity.normalized.y, 0);
+        transform.position += new Vector3(0, raydist * rayDirection.y, 0);
         offseteddown = true;
         JumpAscendDuration = 0;
         CurrentGravity = Gravity;
@@ -272,7 +279,7 @@ public class RaycastPlatformer : MonoBehaviour
 
     void MidDownCollision(float raydist)
     {
-        transform.position += new Vector3(0, raydist * velocity.normalized.y, 0);
+        transform.position += new Vector3(0, raydist* rayDirection.y, 0);
         offsetedup = true;
         Grounded = true;
         BonusJumpCount = BonusJumps;
@@ -281,14 +288,14 @@ public class RaycastPlatformer : MonoBehaviour
 
     void MidRightCollision(float raydist)
     {
-        transform.position += new Vector3(raydist * velocity.normalized.x, 0, 0);
+        transform.position += new Vector3(raydist * rayDirection.x, 0, 0);
         velocity = new Vector2(0, velocity.y);
         offsetedx = true;
     }
 
     void MidLeftCollision(float raydist)
     {
-        transform.position += new Vector3(raydist * velocity.normalized.x, 0, 0);
+        transform.position += new Vector3(raydist * rayDirection.x, 0, 0);
         velocity = new Vector2(0, velocity.y);
         offsetedx = true;
     }
@@ -296,7 +303,7 @@ public class RaycastPlatformer : MonoBehaviour
     void UpLeftCollisionCheck()
     {
         temppos = new Vector2(transform.position.x - playerwidth / 2, transform.position.y + playerheight / 2);
-        RaycastHit2D upleftrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
+        RaycastHit2D upleftrayinfo = Physics2D.Raycast(temppos, rayDirection, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
 
         if (upleftrayinfo.collider != null)
         {
@@ -313,7 +320,7 @@ public class RaycastPlatformer : MonoBehaviour
         {
             if (tempX > 0 && velocity.x < 0 && !offsetedx)
             {
-                transform.position += new Vector3(upleftrayinfo.distance * velocity.normalized.x, 0, 0);
+                transform.position += new Vector3(upleftrayinfo.distance * rayDirection.x, 0, 0);
                 //OFFSET RIGHT
                 velocity = new Vector2(0, velocity.y);
                 offsetedx = true;
@@ -324,7 +331,7 @@ public class RaycastPlatformer : MonoBehaviour
             if (tempY < 0 && !offseteddown && velocity.y > 0)
             {
 
-                transform.position += new Vector3(0, upleftrayinfo.distance * velocity.normalized.y, 0);
+                transform.position += new Vector3(0, upleftrayinfo.distance * rayDirection.y, 0);
                 //OFFSET DOWN
                 offseteddown = true;
                 //JumpAscendDuration = 0;
@@ -352,7 +359,7 @@ public class RaycastPlatformer : MonoBehaviour
     void UpRightCollisionCheck()
     {
         temppos = new Vector2(transform.position.x + playerwidth / 2, transform.position.y + playerheight / 2);
-        RaycastHit2D uprightrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
+        RaycastHit2D uprightrayinfo = Physics2D.Raycast(temppos, rayDirection, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
 
         if (uprightrayinfo.collider != null)
         {
@@ -371,7 +378,7 @@ public class RaycastPlatformer : MonoBehaviour
             if (tempX < 0 && !offsetedx && velocity.x > 0)
             {
                 //OFFSET LEFT
-                transform.position += new Vector3(uprightrayinfo.distance * velocity.normalized.x, 0, 0);
+                transform.position += new Vector3(uprightrayinfo.distance * rayDirection.x, 0, 0);
                 velocity = new Vector2(0, velocity.y);
                 offsetedx = true;
             }
@@ -380,7 +387,7 @@ public class RaycastPlatformer : MonoBehaviour
         {
             if (tempY < 0 && !offseteddown && velocity.y > 0)
             {
-                transform.position += new Vector3(0, uprightrayinfo.distance * velocity.normalized.y, 0);
+                transform.position += new Vector3(0, uprightrayinfo.distance * rayDirection.y, 0);
                 //OFFSET DOWN
                 offseteddown = true;
                 if (Brain.jump && !Brain.moveRight && BroSwing)
@@ -404,7 +411,7 @@ public class RaycastPlatformer : MonoBehaviour
     void DownLeftCollisionCheck()
     {
         temppos = new Vector2(transform.position.x - playerwidth / 2, transform.position.y - playerheight / 2);
-        RaycastHit2D downleftrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, CurrentLayer);
+        RaycastHit2D downleftrayinfo = Physics2D.Raycast(temppos, rayDirection, (velocity * DeltaTime).magnitude, CurrentLayer);
 
         if (downleftrayinfo.collider != null)
         {
@@ -426,7 +433,7 @@ public class RaycastPlatformer : MonoBehaviour
                 //OFFSET RIGHT
                 if (downleftrayinfo.collider.gameObject.layer != 1 << 9)
                 {
-                    transform.position += new Vector3(downleftrayinfo.distance * velocity.normalized.x, 0, 0);
+                    transform.position += new Vector3(downleftrayinfo.distance * rayDirection.x, 0, 0);
                 }
 
                 if (Brain.moveLeft && JumpAscendDuration <= 0 && BroClimb)
@@ -444,7 +451,7 @@ public class RaycastPlatformer : MonoBehaviour
         {
             if (tempY > 0 && velocity.y < 0 && !offsetedup)
             {
-                transform.position += new Vector3(0, downleftrayinfo.distance * velocity.normalized.y, 0);
+                transform.position += new Vector3(0, downleftrayinfo.distance * rayDirection.y, 0);
                 //OFFSET UP
                 offsetedup = true;
                 Grounded = true;
@@ -458,7 +465,7 @@ public class RaycastPlatformer : MonoBehaviour
     void DownRightCollisionCheck()
     {
         temppos = new Vector2(transform.position.x + playerwidth / 2, transform.position.y - playerheight / 2);
-        RaycastHit2D downrightrayinfo = Physics2D.Raycast(temppos, velocity.normalized, (velocity * DeltaTime).magnitude, CurrentLayer);
+        RaycastHit2D downrightrayinfo = Physics2D.Raycast(temppos, rayDirection, (velocity * DeltaTime).magnitude, CurrentLayer);
 
         if (downrightrayinfo.collider != null)
         {
@@ -478,7 +485,7 @@ public class RaycastPlatformer : MonoBehaviour
                 //OFFSET LEFT
                 if (downrightrayinfo.collider.gameObject.layer != 1 << 9)
                 {
-                    transform.position += new Vector3(downrightrayinfo.distance * velocity.normalized.x, 0, 0);
+                    transform.position += new Vector3(downrightrayinfo.distance * rayDirection.x, 0, 0);
                 }
 
                 if (Brain.moveRight && JumpAscendDuration <= 0 && BroClimb)
@@ -498,7 +505,7 @@ public class RaycastPlatformer : MonoBehaviour
         {
             if (tempY > 0 && !offsetedup && velocity.y < 0)
             {
-                transform.position += new Vector3(0, downrightrayinfo.distance * velocity.normalized.y, 0);
+                transform.position += new Vector3(0, downrightrayinfo.distance * rayDirection.y, 0);
                 //OFFSET UP
                 Grounded = true;
                 BonusJumpCount = BonusJumps;

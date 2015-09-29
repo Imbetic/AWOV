@@ -17,15 +17,15 @@ public class ParticleSource : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timer -= Time.deltaTime;
-        if (timer <= 0)
-        {
-            CreateParticles(10, new Vector2(0, 0));
-            timer = 0.5f;
-        }
+        //timer -= Time.deltaTime;
+        //if (timer <= 0)
+        //{
+        //    CreateParticles(10, new Vector2(0, 0));
+        //    timer = 0.5f;
+        //}
     }
 
-    void CreateParticles(int quantity, Vector2 forcetoadd)
+    public void CreateParticles(int quantity, Vector2 forcetoadd)
     {
         for (int i = 0; i < quantity; i++)
         {
