@@ -27,6 +27,8 @@ public class Fighter : MonoBehaviour
 
     bool IsBlocking;
 
+    public int Health = 100;
+
     //LineCastPhysicsScript FighterPhysics;
 
     // Use this for initialization

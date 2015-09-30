@@ -58,7 +58,7 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: .5
+  m_Radius: .0299999993
 --- !u!114 &11470126
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -71,6 +71,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 2
+  DestroyOnCollision: 1
 --- !u!212 &21242006
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -95,7 +96,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ee918fc17d987504a8d24c5368d0c900, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d48da6a1b79e8d3458835b25eea76b12, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000
 Prefab:

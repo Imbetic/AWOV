@@ -29,8 +29,8 @@ public class CameraFollowScript : MonoBehaviour
         else if (xpos > (14.5f - theBox.size.x / 2)) xpos = (14.5f - theBox.size.x / 2);
 
         ypos = Mathf.Lerp(transform.position.y, player1.position.y, Time.deltaTime * 4);
-        if (ypos < -8 + (theBox.size.y / 2)) ypos = -8 + (theBox.size.y / 2);
-        else if (ypos > 8 - (theBox.size.y / 2)) ypos = 8 - (theBox.size.y / 2);
+        if (ypos < -9 + (theBox.size.y / 2)) ypos = -9 + (theBox.size.y / 2);
+        else if (ypos > 9 - (theBox.size.y / 2)) ypos = 9 - (theBox.size.y / 2);
 
         transform.position = new Vector3(xpos, ypos, -10);
 

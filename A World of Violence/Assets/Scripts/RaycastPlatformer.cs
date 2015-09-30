@@ -6,6 +6,10 @@ public class RaycastPlatformer : MonoBehaviour
     //The controller
     CharacterActions Brain;
 
+    public Transform Visuals;
+
+    public Animator Legs;
+
     //Movement tweaking
     public bool BroClimb;
     public bool BroSwing;
@@ -94,17 +98,22 @@ public class RaycastPlatformer : MonoBehaviour
 
     void Walking()
     {
+        Legs.SetBool("Running", false);
         if (Brain.moveLeft)
         {
             //Body.AddForce(-RunningAcceleration * Vector2.right);
             velocity -= Vector2.right * DeltaTime * RunningAcceleration;
             //transform.localScale = new Vector3(-1, 1, 1);
+            Visuals.localScale = new Vector3(-1, 1, 1);
+            Legs.SetBool("Running", true);
         }
         if (Brain.moveRight)
         {
             //Body.AddForce(RunningAcceleration * Vector2.right);
             velocity += Vector2.right * DeltaTime * RunningAcceleration;
             //transform.localScale = new Vector3(1, 1, 1);
+            Visuals.localScale = new Vector3(1, 1, 1);
+            Legs.SetBool("Running", true);
         }
         if (Brain.moveDown)
         {

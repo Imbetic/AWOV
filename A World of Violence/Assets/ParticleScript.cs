@@ -4,7 +4,7 @@ using System.Collections;
 public class ParticleScript : MonoBehaviour {
 
     public float duration;
-
+    public bool DestroyOnCollision;
 	// Use this for initialization
 	void Start () {
 	
@@ -18,4 +18,12 @@ public class ParticleScript : MonoBehaviour {
             Destroy(this.gameObject);
         }
 	}
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (DestroyOnCollision)
+        {
+            Destroy(this.gameObject);
+        }
+    }
 }
