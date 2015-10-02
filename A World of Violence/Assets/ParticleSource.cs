@@ -5,7 +5,7 @@ public class ParticleSource : MonoBehaviour
 {
 
     public GameObject Sparks;
-
+    public float ParticleForce;
 
     float timer = 0.5f;
     // Use this for initialization
@@ -32,7 +32,7 @@ public class ParticleSource : MonoBehaviour
             GameObject tempparticle = Instantiate(Sparks);
             tempparticle.transform.position = new Vector3(transform.position.x + (float)Random.Range(-50, 50) / 100, transform.position.y + (float)Random.Range(-50, 50) / 100, transform.position.z);
             tempparticle.transform.eulerAngles = new Vector3(0, 0, Vector2.Angle(Vector2.zero, forcetoadd));
-            tempparticle.GetComponent<Rigidbody2D>().AddForce(new Vector2(forcetoadd.x + (float)Random.Range(-50, 50), forcetoadd.y + (float)Random.Range(-50, 50)), ForceMode2D.Impulse);
+            tempparticle.GetComponent<Rigidbody2D>().AddForce(new Vector2(forcetoadd.x + (float)Random.Range(-ParticleForce, ParticleForce), forcetoadd.y + (float)Random.Range(-ParticleForce, ParticleForce)), ForceMode2D.Impulse);
         };
     }
 

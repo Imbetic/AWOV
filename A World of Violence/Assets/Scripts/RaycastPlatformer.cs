@@ -7,8 +7,9 @@ public class RaycastPlatformer : MonoBehaviour
     CharacterActions Brain;
 
     public Transform Visuals;
-
     public Animator Legs;
+
+    public Fighter FightingScript;
 
     //Movement tweaking
     public bool BroClimb;
@@ -25,8 +26,8 @@ public class RaycastPlatformer : MonoBehaviour
     //Jumpingrelated
     bool PreviousBroSwinging = false;
     bool Broswinging = false;
-    int BonusJumpCount;   
-    bool PreviousJump; 
+    int BonusJumpCount;
+    bool PreviousJump;
     public bool Grounded;
     public float JumpAscendDuration;
     public float JumpInterval;
@@ -44,9 +45,10 @@ public class RaycastPlatformer : MonoBehaviour
     Vector2 temppos;
     public bool DodgingPlatforms;
     bool stopAtPlatform = false;
-    public float playerheight;
+    public float playerheightdown;
+    public float playerheightup;
     public float playerwidth;
-    
+
     //Physics
     float CurrentGravity;
     public Vector2 velocity;
@@ -67,8 +69,12 @@ public class RaycastPlatformer : MonoBehaviour
         PreviousJump = Brain.jump;
         DeltaTime = Time.deltaTime;
         if (DeltaTime > 0.04f) DeltaTime = 0.04f;
-        
+
         Brain.UpdateMovementCommands();
+        if (FightingScript != null)
+        {
+            FightingScript.Fighting();
+        }
     }
 
     void Update()
@@ -87,6 +93,11 @@ public class RaycastPlatformer : MonoBehaviour
 
         Friction();
         Positioning();
+        if (!Grounded)
+        {
+            Legs.SetBool("Jumping", true);
+        }
+        else Legs.SetBool("Jumping", false);
 
     }
 
@@ -99,22 +110,132 @@ public class RaycastPlatformer : MonoBehaviour
     void Walking()
     {
         Legs.SetBool("Running", false);
-        if (Brain.moveLeft)
+        
+        if (FightingScript != null)
         {
-            //Body.AddForce(-RunningAcceleration * Vector2.right);
-            velocity -= Vector2.right * DeltaTime * RunningAcceleration;
-            //transform.localScale = new Vector3(-1, 1, 1);
-            Visuals.localScale = new Vector3(-1, 1, 1);
-            Legs.SetBool("Running", true);
+            FightingScript.TheTorso.GetComponent<Animator>().SetBool("Running", false);
+            Legs.SetBool("Backing", false);
+            if (FightingScript.isAttacking)
+            {
+                if(FightingScript.CurrentAttack.GetComponent<AttackScript>().Direction == 1)
+                {
+                    Visuals.localScale = new Vector3(1, 1, 1);
+                }
+                else if (FightingScript.CurrentAttack.GetComponent<AttackScript>().Direction == 3)
+                {
+                    Visuals.localScale = new Vector3(-1, 1, 1);
+                }
+
+                if (Brain.moveLeft)
+                {
+                    velocity -= Vector2.right * DeltaTime * RunningAcceleration;
+                    if(Visuals.localScale.x == 1)
+                    {
+                        Legs.SetBool("Backing", true);
+                    }
+                    else
+                    {
+                        Legs.SetBool("Running", true);
+                    }
+                }
+                if (Brain.moveRight)
+                {
+                    velocity += Vector2.right * DeltaTime * RunningAcceleration;
+                    if (Visuals.localScale.x == 1)
+                    {
+                        Legs.SetBool("Running", true);
+                    }
+                    else
+                    {
+                        Legs.SetBool("Backing", true);
+                    }
+                }
+            }
+            else if(FightingScript.ChargeDuration>0)
+            {
+                if(FightingScript.ChargeDirection == 1)
+                {
+                    Visuals.localScale = new Vector3(1, 1, 1);
+                }
+                
+                if (FightingScript.ChargeDirection == 3)
+                {
+                    Visuals.localScale = new Vector3(-1, 1, 1);
+                }
+
+                if (Brain.moveLeft)
+                {
+                    velocity -= Vector2.right * DeltaTime * RunningAcceleration;
+                    if (Visuals.localScale.x == 1)
+                    {
+                        Legs.SetBool("Backing", true);
+                    }
+                    else
+                    {
+                        Legs.SetBool("Running", true);
+                    }
+                }
+                if (Brain.moveRight)
+                {
+                    velocity += Vector2.right * DeltaTime * RunningAcceleration;
+                    if (Visuals.localScale.x == 1)
+                    {
+                        Legs.SetBool("Running", true);
+                    }
+                    else
+                    {
+                        Legs.SetBool("Backing", true);
+                    }
+                }
+            }
+            else
+            {
+                //FightingScript.TheTorso.GetComponent<Animator>().SetBool("CS1", false);
+                if (Brain.moveLeft)
+                {
+                    //Body.AddForce(-RunningAcceleration * Vector2.right);
+                    velocity -= Vector2.right * DeltaTime * RunningAcceleration;
+                    //transform.localScale = new Vector3(-1, 1, 1);
+
+                    Visuals.localScale = new Vector3(-1, 1, 1);
+                    Legs.SetBool("Running", true);
+                    FightingScript.TheTorso.GetComponent<Animator>().SetBool("Running", true);
+
+                }
+                if (Brain.moveRight)
+                {
+                    //Body.AddForce(RunningAcceleration * Vector2.right);
+                    velocity += Vector2.right * DeltaTime * RunningAcceleration;
+                    //transform.localScale = new Vector3(1, 1, 1);
+
+                    Visuals.localScale = new Vector3(1, 1, 1);
+                    Legs.SetBool("Running", true);
+                    FightingScript.TheTorso.GetComponent<Animator>().SetBool("Running", true);
+                }
+            }
         }
-        if (Brain.moveRight)
+        else
         {
-            //Body.AddForce(RunningAcceleration * Vector2.right);
-            velocity += Vector2.right * DeltaTime * RunningAcceleration;
-            //transform.localScale = new Vector3(1, 1, 1);
-            Visuals.localScale = new Vector3(1, 1, 1);
-            Legs.SetBool("Running", true);
+
+            if (Brain.moveLeft)
+            {
+                velocity -= Vector2.right * DeltaTime * RunningAcceleration;
+
+                Visuals.localScale = new Vector3(-1, 1, 1);
+                Legs.SetBool("Running", true);
+            }
+            if (Brain.moveRight)
+            {
+                velocity += Vector2.right * DeltaTime * RunningAcceleration;
+
+                Visuals.localScale = new Vector3(1, 1, 1);
+                Legs.SetBool("Running", true);
+            }
+
         }
+
+
+
         if (Brain.moveDown)
         {
             DodgingPlatforms = true;
@@ -205,7 +326,7 @@ public class RaycastPlatformer : MonoBehaviour
         offsetedx = false;
         Grounded = false;
 
-        if(stopAtPlatform)
+        if (stopAtPlatform)
         {
             StopAtPlatformFix();
         }
@@ -213,7 +334,7 @@ public class RaycastPlatformer : MonoBehaviour
 
     public void StopAtPlatformFix()
     {
-        temppos = new Vector2(transform.position.x, transform.position.y - playerheight / 2);
+        temppos = new Vector2(transform.position.x, transform.position.y - playerheightdown);
         RaycastHit2D middownrayinfo = Physics2D.Raycast(temppos, new Vector2(0, 1), 0.5f, CurrentLayer);
         if (middownrayinfo.collider != null)
         {
@@ -224,7 +345,7 @@ public class RaycastPlatformer : MonoBehaviour
         }
         else
         {
-            temppos = new Vector2(transform.position.x - playerwidth / 2, transform.position.y - playerheight / 2);
+            temppos = new Vector2(transform.position.x - playerwidth / 2, transform.position.y - playerheightdown);
             RaycastHit2D downleftrayinfo = Physics2D.Raycast(temppos, new Vector2(0, 1), 0.5f, CurrentLayer);
             if (downleftrayinfo.collider != null)
             {
@@ -235,7 +356,7 @@ public class RaycastPlatformer : MonoBehaviour
             }
             else
             {
-                temppos = new Vector2(transform.position.x + playerwidth / 2, transform.position.y - playerheight / 2);
+                temppos = new Vector2(transform.position.x + playerwidth / 2, transform.position.y - playerheightdown);
                 RaycastHit2D downrightrayinfo = Physics2D.Raycast(temppos, new Vector2(0, 1), 0.5f, CurrentLayer);
                 if (downrightrayinfo.collider != null)
                 {
@@ -254,10 +375,10 @@ public class RaycastPlatformer : MonoBehaviour
 
         rayDirection = velocity.normalized;
 
-        temppos = new Vector2(transform.position.x, transform.position.y + playerheight / 2);
+        temppos = new Vector2(transform.position.x, transform.position.y + playerheightup);
         RaycastHit2D miduprayinfo = Physics2D.Raycast(temppos, rayDirection, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
 
-        temppos = new Vector2(transform.position.x, transform.position.y - playerheight / 2);
+        temppos = new Vector2(transform.position.x, transform.position.y - playerheightdown);
         RaycastHit2D middownrayinfo = Physics2D.Raycast(temppos, rayDirection, (velocity * DeltaTime).magnitude, CurrentLayer);
 
         temppos = new Vector2(transform.position.x - playerwidth / 2, transform.position.y);
@@ -356,7 +477,7 @@ public class RaycastPlatformer : MonoBehaviour
 
     void UpLeftCollisionCheck()
     {
-        temppos = new Vector2(transform.position.x - playerwidth / 2, transform.position.y + playerheight / 2);
+        temppos = new Vector2(transform.position.x - playerwidth / 2, transform.position.y + playerheightup);
         RaycastHit2D upleftrayinfo = Physics2D.Raycast(temppos, rayDirection, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
 
         if (upleftrayinfo.collider != null)
@@ -412,7 +533,7 @@ public class RaycastPlatformer : MonoBehaviour
 
     void UpRightCollisionCheck()
     {
-        temppos = new Vector2(transform.position.x + playerwidth / 2, transform.position.y + playerheight / 2);
+        temppos = new Vector2(transform.position.x + playerwidth / 2, transform.position.y + playerheightup);
         RaycastHit2D uprightrayinfo = Physics2D.Raycast(temppos, rayDirection, (velocity * DeltaTime).magnitude, DodgePlatformsCollision);
 
         if (uprightrayinfo.collider != null)
@@ -464,7 +585,7 @@ public class RaycastPlatformer : MonoBehaviour
 
     void DownLeftCollisionCheck()
     {
-        temppos = new Vector2(transform.position.x - playerwidth / 2, transform.position.y - playerheight / 2);
+        temppos = new Vector2(transform.position.x - playerwidth / 2, transform.position.y - playerheightdown);
         RaycastHit2D downleftrayinfo = Physics2D.Raycast(temppos, rayDirection, (velocity * DeltaTime).magnitude, CurrentLayer);
 
         if (downleftrayinfo.collider != null)
@@ -520,7 +641,7 @@ public class RaycastPlatformer : MonoBehaviour
 
     void DownRightCollisionCheck()
     {
-        temppos = new Vector2(transform.position.x + playerwidth / 2, transform.position.y - playerheight / 2);
+        temppos = new Vector2(transform.position.x + playerwidth / 2, transform.position.y - playerheightdown);
         RaycastHit2D downrightrayinfo = Physics2D.Raycast(temppos, rayDirection, (velocity * DeltaTime).magnitude, CurrentLayer);
 
         if (downrightrayinfo.collider != null)
@@ -586,14 +707,14 @@ public class RaycastPlatformer : MonoBehaviour
         }
 
         transform.position += new Vector3(velocity.x, velocity.y, 0) * DeltaTime;
-        
+
         if (Broswinging)
         {
             velocity = new Vector2(velocity.x, 10);
         }
     }
 
-    void AddForce(Vector2 force)
+    public void AddForce(Vector2 force)
     {
         ForceToAdd += force;
     }

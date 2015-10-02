@@ -7,6 +7,8 @@ public class AttackScript : MonoBehaviour {
     public float AttackDrawBack;
     public float AttackDamage;
     public float AttackDelay;
+    public int Direction;
+    public int Cleave;
 	// Use this for initialization
 	void Start () {
 	
@@ -19,6 +21,17 @@ public class AttackScript : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        GetComponent<BoxCollider2D>().enabled = false;
+        Cleave -= 1;
+        if (Cleave <= 0)
+        {
+            GetComponent<BoxCollider2D>().enabled = false;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+
+            GetComponent<BoxCollider2D>().enabled = false;
+
     }
 }

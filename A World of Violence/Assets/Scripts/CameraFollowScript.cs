@@ -14,6 +14,7 @@ public class CameraFollowScript : MonoBehaviour
     void Start()
     {
         theBox = GetComponent<BoxCollider2D>();
+        theBox.size = new Vector2(((float)Screen.width / (float)Screen.height) * GetComponent<Camera>().orthographicSize * 2, GetComponent<Camera>().orthographicSize * 2);
     }
 
     // Update is called once per frame
@@ -23,18 +24,19 @@ public class CameraFollowScript : MonoBehaviour
         float xpos = transform.position.x;
         float ypos = transform.position.y;
 
+        
 
-        xpos = Mathf.Lerp(transform.position.x, player1.position.x, Time.deltaTime * 4);
-        if (xpos < (-14.5f + theBox.size.x / 2)) xpos = (-14.5f + theBox.size.x / 2);
+        xpos = Mathf.Lerp(transform.position.x, player1.position.x, Time.deltaTime * 8);
+        if (xpos < ((-14.5f) + theBox.size.x / 2)) xpos = (-14.5f + theBox.size.x / 2);
         else if (xpos > (14.5f - theBox.size.x / 2)) xpos = (14.5f - theBox.size.x / 2);
 
-        ypos = Mathf.Lerp(transform.position.y, player1.position.y, Time.deltaTime * 4);
-        if (ypos < -9 + (theBox.size.y / 2)) ypos = -9 + (theBox.size.y / 2);
-        else if (ypos > 9 - (theBox.size.y / 2)) ypos = 9 - (theBox.size.y / 2);
+        ypos = Mathf.Lerp(transform.position.y, player1.position.y, Time.deltaTime * 2);
+        if (ypos < -8 + (theBox.size.y / 2)) ypos = -8 + (theBox.size.y / 2);
+        else if (ypos > 8 - (theBox.size.y / 2)) ypos = 8 - (theBox.size.y / 2);
 
         transform.position = new Vector3(xpos, ypos, -10);
 
-        theBox.size = new Vector2(((float)Screen.width / (float)Screen.height) * 10, 10);
+        theBox.size = new Vector2(((float)Screen.width / (float)Screen.height) * GetComponent<Camera>().orthographicSize * 2, GetComponent<Camera>().orthographicSize * 2);
 
     }
 

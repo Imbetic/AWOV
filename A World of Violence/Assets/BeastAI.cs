@@ -77,12 +77,6 @@ public class BeastAI : CharacterActions
         }
 
     }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        SourceOfMadness.GetComponent<ParticleSource>().CreateParticles(100, Vector2.zero);
-    }
-
     // Update is called once per frame
 
 }

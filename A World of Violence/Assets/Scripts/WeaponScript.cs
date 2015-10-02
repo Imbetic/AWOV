@@ -22,10 +22,18 @@ public class WeaponScript : MonoBehaviour
     public float Attack2ChargeThreshold;
     public float Attack3ChargeThreshold;
 
+    public Sprite IdleRightSprite;
+    public Sprite VerticalAttack1Sprite;
+    public Sprite UpAttack1Sprite;
+    public Sprite DownAttack1Sprite;
+    
+
+    //Fighter Owner;
+
     // Use this for initialization
     void Start()
     {
-
+        //Owner = transform.parent.GetComponent<Fighter>();
     }
 
     // Update is called once per frame
