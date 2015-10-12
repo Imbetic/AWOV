@@ -67,7 +67,7 @@ public class Fighter : MonoBehaviour
             //        TheTorso.GetComponent<Animator>().SetBool("CS1", true);
             //        //TorsoVisuals.sprite = TheTorso.SpearTHCharge1;
             //    }
-                
+
             //}
             PreviousAttack = true;
         }
@@ -80,6 +80,7 @@ public class Fighter : MonoBehaviour
 
     public void Fighting()
     {
+        TheTorso.GetComponent<Animator>().runtimeAnimatorController.animationClips[0] = TheTorso.GetComponent<Animator>().runtimeAnimatorController.animationClips[1] = TheTorso.GetComponent<Animator>().runtimeAnimatorController.animationClips[2] = TheTorso.GetComponent<Animator>().runtimeAnimatorController.animationClips[3];
         PreUpdate();
         Combat();
         if (!Brain.leftAttack && !Brain.rightAttack && !isAttacking)
@@ -89,6 +90,7 @@ public class Fighter : MonoBehaviour
         else
         {
             TheTorso.GetComponent<Animator>().SetBool("CS1", true);
+            
         }
     }
 
@@ -112,7 +114,7 @@ public class Fighter : MonoBehaviour
             if (CurrentAttack.GetComponent<AttackScript>().Direction == 1 || CurrentAttack.GetComponent<AttackScript>().Direction == 3)
             {
                 //TorsoVisuals.sprite = TheTorso.SpearTHAttack1;
-            }            
+            }
             AttackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDuration;
             DrawbackDuration = CurrentAttack.GetComponent<AttackScript>().AttackDrawBack;
         }
@@ -155,9 +157,9 @@ public class Fighter : MonoBehaviour
                 CurrentAttack = Weapon.GetComponent<WeaponScript>().FrontAttack1;
                 AttackDelayTimer = CurrentAttack.GetComponent<AttackScript>().AttackDelay;
 
-                    //TorsoVisuals.sprite = TheTorso.SpearTHCharge1;
+                //TorsoVisuals.sprite = TheTorso.SpearTHCharge1;
                 TheTorso.GetComponent<Animator>().SetBool("CS1", true);
-                
+
             }
             else if (strength == 2)
             {
@@ -196,8 +198,8 @@ public class Fighter : MonoBehaviour
                 AttackDelayTimer = CurrentAttack.GetComponent<AttackScript>().AttackDelay;
 
                 TheTorso.GetComponent<Animator>().SetBool("CS1", true);
-                    //TorsoVisuals.sprite = TheTorso.SpearTHCharge1;
-                
+                //TorsoVisuals.sprite = TheTorso.SpearTHCharge1;
+
             }
             else if (strength == 2)
             {
@@ -224,10 +226,10 @@ public class Fighter : MonoBehaviour
                 ChargeDirection = 0;
             }
 
-            if (!PreviousAttack)
-            {
-                CommenceAttack(1, 0);
-            }
+            //if (!PreviousAttack)
+            //{
+            //    CommenceAttack(1, 0);
+            //}
         }
         else
         {
@@ -287,10 +289,10 @@ public class Fighter : MonoBehaviour
                 ChargeDirection = 1;
             }
 
-            if (!PreviousAttack && !Brain.downAttack && !Brain.upAttack && !Brain.leftAttack)
-            {
-                CommenceAttack(1, 1);
-            }
+            //if (!PreviousAttack && !Brain.downAttack && !Brain.upAttack && !Brain.leftAttack)
+            //{
+            //    CommenceAttack(1, 1);
+            //}
         }
         else
         {
@@ -344,10 +346,10 @@ public class Fighter : MonoBehaviour
                 ChargeDirection = 2;
             }
 
-            if (!PreviousAttack && !Brain.upAttack)
-            {
-                CommenceAttack(1, 2);
-            }
+            //if (!PreviousAttack && !Brain.upAttack)
+            //{
+            //    CommenceAttack(1, 2);
+            //}
         }
         else
         {
@@ -402,10 +404,10 @@ public class Fighter : MonoBehaviour
                 ChargeDirection = 3;
             }
 
-            if (!PreviousAttack && !Brain.downAttack && !Brain.upAttack)
-            {
-                CommenceAttack(1, 3);
-            }
+            //if (!PreviousAttack && !Brain.downAttack && !Brain.upAttack)
+            //{
+            //    CommenceAttack(1, 3);
+            //}
         }
         else
         {
@@ -466,13 +468,13 @@ public class Fighter : MonoBehaviour
 
                 if (DrawbackDuration > 0)
                 {
-                    DrawbackDuration -= Time.deltaTime;      
-                    if(DrawbackDuration < 0)
+                    DrawbackDuration -= Time.deltaTime;
+                    if (DrawbackDuration < 0)
                     {
                         isAttacking = false;
-                        
+
                         TheTorso.GetComponent<Animator>().SetBool("AS1", false);
-                        
+
                     }
                 }
                 else if (Brain.block)
@@ -481,8 +483,8 @@ public class Fighter : MonoBehaviour
                 }
                 else
                 {
-                    
-                    
+
+
                     AttackChecks();
                 }
             }
@@ -493,26 +495,41 @@ public class Fighter : MonoBehaviour
     {
         if (ChargeChecksUp())
         {
-            if (ChargeDuration > Weapon.GetComponent<WeaponScript>().Attack3ChargeThreshold)
+            if (ChargeDuration > 0)
             {
-                CommenceAttack(2, 0);
-            }
-            else if (ChargeDuration > Weapon.GetComponent<WeaponScript>().Attack2ChargeThreshold)
-            {
-                CommenceAttack(3, 0);
+                if (ChargeDuration >= Weapon.GetComponent<WeaponScript>().Attack3ChargeThreshold)
+                {
+                    CommenceAttack(2, 0);
+                }
+                else if (ChargeDuration >= Weapon.GetComponent<WeaponScript>().Attack2ChargeThreshold)
+                {
+                    CommenceAttack(3, 0);
+                }
+                else
+                {
+                    CommenceAttack(1, 0);
+                }
             }
             ChargeDuration = 0;
         }
 
         if (ChargeChecksRight())
         {
-            if (ChargeDuration > Weapon.GetComponent<WeaponScript>().Attack3ChargeThreshold)
+            if (ChargeDuration > 0)
             {
-                CommenceAttack(3, 1);
-            }
-            else if (ChargeDuration > Weapon.GetComponent<WeaponScript>().Attack2ChargeThreshold)
-            {
-                CommenceAttack(2, 1);
+
+                if (ChargeDuration >= Weapon.GetComponent<WeaponScript>().Attack3ChargeThreshold)
+                {
+                    CommenceAttack(3, 1);
+                }
+                else if (ChargeDuration >= Weapon.GetComponent<WeaponScript>().Attack2ChargeThreshold)
+                {
+                    CommenceAttack(2, 1);
+                }
+                else
+                {
+                    CommenceAttack(1, 1);
+                }
             }
             ChargeDuration = 0;
         }
@@ -520,37 +537,50 @@ public class Fighter : MonoBehaviour
 
         if (ChargeChecksDown())
         {
-            if (ChargeDuration > Weapon.GetComponent<WeaponScript>().Attack3ChargeThreshold)
+            if (ChargeDuration > 0)
             {
-                CommenceAttack(3, 2);
+                if (ChargeDuration > Weapon.GetComponent<WeaponScript>().Attack3ChargeThreshold)
+                {
+                    CommenceAttack(3, 2);
 
-            }
-            else if (ChargeDuration > Weapon.GetComponent<WeaponScript>().Attack2ChargeThreshold)
-            {
-                CommenceAttack(2, 2);
+                }
+                else if (ChargeDuration > Weapon.GetComponent<WeaponScript>().Attack2ChargeThreshold)
+                {
+                    CommenceAttack(2, 2);
 
+                }
+                else
+                {
+                    CommenceAttack(1, 2);
+                }
             }
             ChargeDuration = 0;
         }
 
         if (ChargeChecksLeft())
         {
-            if (ChargeDuration > Weapon.GetComponent<WeaponScript>().Attack3ChargeThreshold)
+            if (ChargeDuration > 0)
             {
-                CommenceAttack(3, 3);
+                if (ChargeDuration > Weapon.GetComponent<WeaponScript>().Attack3ChargeThreshold)
+                {
+                    CommenceAttack(3, 3);
 
+                }
+                else if (ChargeDuration > Weapon.GetComponent<WeaponScript>().Attack2ChargeThreshold)
+                {
+                    CommenceAttack(2, 3);
+
+                }
+                else
+                {
+                    CommenceAttack(1, 3);
+                }
             }
-            else if (ChargeDuration > Weapon.GetComponent<WeaponScript>().Attack2ChargeThreshold)
-            {
-                CommenceAttack(2, 3);
-
-            }
-
             ChargeDuration = 0;
         }
 
 
-        
+
     }
 
     void Blocking()
