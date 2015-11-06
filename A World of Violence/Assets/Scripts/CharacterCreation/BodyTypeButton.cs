@@ -4,6 +4,8 @@ using System.Collections;
 public class BodyTypeButton : MonoBehaviour {
 
     public int bodyType;
+    
+    
 
     public SpriteRenderer body;
 
