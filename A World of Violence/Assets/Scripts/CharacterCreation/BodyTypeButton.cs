@@ -1,11 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class BodyTypeButton : MonoBehaviour {
 
     public int bodyType;
-    
-    
+
+    public Sprite femaleIcon;
+    public Sprite femalePressed;
+
+    public Sprite maleIcon;
+    public Sprite malePressed;
 
     public SpriteRenderer body;
 
@@ -26,6 +31,33 @@ public class BodyTypeButton : MonoBehaviour {
     {
         characterProperties = GameObject.Find("Character").GetComponent<CharacterProperties>();
 	}
+
+    void OnEnable() {
+        characterProperties = GameObject.Find("Character").GetComponent<CharacterProperties>();
+
+        if (characterProperties.female) 
+        {
+            SpriteState st = new SpriteState();
+            st.disabledSprite = femaleIcon;
+            st.highlightedSprite = femalePressed;
+            st.pressedSprite = femalePressed;
+            GetComponent<Button>().spriteState = st;
+
+           GetComponent<Image>().sprite = femaleIcon;
+        }
+  
+        else 
+        {
+            SpriteState st = new SpriteState();
+            st.disabledSprite = maleIcon;
+            st.highlightedSprite = malePressed;
+            st.pressedSprite = malePressed;
+            GetComponent<Button>().spriteState = st;
+
+            GetComponent<Image>().sprite=maleIcon;
+ 
+        }
+    }
 
     public void ChangeBodyType()
     {
