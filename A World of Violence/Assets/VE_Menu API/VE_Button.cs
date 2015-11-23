@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class VE_Button : MonoBehaviour {
     public bool isTargeted; //set to true on starting button, false on the rest
@@ -11,6 +12,8 @@ public class VE_Button : MonoBehaviour {
 
     VE_Button nextButton;
 
+
+    public UnityEvent OnPressed;
 	// Use this for initialization
 	void Start () {
         if (isTargeted)
@@ -27,6 +30,10 @@ public class VE_Button : MonoBehaviour {
         }
         else if (isTargeted)
         {
+            if(Input.GetKeyDown(enterKey))
+            {
+                OnPressed.Invoke();
+            }
             if (Input.GetKeyDown(rightKey))
             {
                 if (rightButton != null)
