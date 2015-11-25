@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 
 public class VE_Button : MonoBehaviour {
+   
     public bool isTargeted; //set to true on starting button, false on the rest
     public bool isTargetedThisFrame;
     public VE_Button rightButton, leftButton, downButton, upButton; //These are the buttons you can switch to from the current one. Assign them in the editor.
@@ -12,10 +13,14 @@ public class VE_Button : MonoBehaviour {
 
     VE_Button nextButton;
 
+    public UnityEvent onPressed;
+    public AudioClip soundPressed;
+    public AudioClip soundMoved;
 
-    public UnityEvent OnPressed;
+    AudioSource audioSource;
 	// Use this for initialization
 	void Start () {
+        audioSource = GetComponent<AudioSource>();
         if (isTargeted)
         {
             GetComponent<Image>().sprite = targetedImage;
@@ -32,12 +37,22 @@ public class VE_Button : MonoBehaviour {
         {
             if(Input.GetKeyDown(enterKey))
             {
-                OnPressed.Invoke();
+                if(soundPressed != null)
+                {
+                    audioSource.PlayOneShot(soundPressed);
+                    
+                }
+                onPressed.Invoke();
             }
             if (Input.GetKeyDown(rightKey))
             {
                 if (rightButton != null)
                 {
+                    if (soundMoved != null)
+                    {
+                        audioSource.PlayOneShot(soundMoved);
+
+                    }
                     nextButton = rightButton;
                 }
             }
@@ -45,6 +60,11 @@ public class VE_Button : MonoBehaviour {
             {
                 if (leftButton != null)
                 {
+                    if (soundMoved != null)
+                    {
+                        audioSource.PlayOneShot(soundMoved);
+
+                    }
                     nextButton = leftButton;
                 }
             }
@@ -52,6 +72,11 @@ public class VE_Button : MonoBehaviour {
             {
                 if (downButton != null)
                 {
+                    if (soundMoved != null)
+                    {
+                        audioSource.PlayOneShot(soundMoved);
+
+                    }
                     nextButton = downButton;
                 }
             }
@@ -59,6 +84,11 @@ public class VE_Button : MonoBehaviour {
             {
                 if (upButton != null)
                 {
+                    if (soundMoved != null)
+                    {
+                        audioSource.PlayOneShot(soundMoved);
+
+                    }
                     nextButton = upButton;
                 }
             }
