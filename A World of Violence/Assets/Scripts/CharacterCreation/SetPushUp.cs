@@ -5,6 +5,24 @@ public class SetPushUp : MonoBehaviour
 {
     CharacterProperties characterProperties;
 
+    //public Transform bodyColors;
+    //public Transform bodyTypes;
+
+    //public Transform paintColors;
+    //public Transform paintTypes;
+
+    //public Transform hairColors;
+    //public Transform hairTypes;
+
+    //public Transform chestColors;
+    //public Transform chestTypes;
+
+    //public Transform legsColors;
+    //public Transform legsTypes;
+
+    //public Transform weaponColors;
+    //public Transform weaponTypes;
+
     public Sprite palePowerful;
     public Sprite paleAthletic;
     public Sprite paleFair;
@@ -109,7 +127,16 @@ public class SetPushUp : MonoBehaviour
                 {
                     characterProperties.pushedBoobs = darkMighty;
                 }
-            }
+            }           
         }
+
+        //for (int i = 0; i < bodyTypes.childCount; i++)
+        //{
+        //    bodyTypes.GetChild(i).GetChild(0).gameObject.SetActive(false);
+        //}
+        //for (int i = 0; i < bodyColors.childCount; i++)
+        //{
+        //    bodyColors.GetChild(i).GetChild(0).gameObject.SetActive(false);
+        //}
     }
 }

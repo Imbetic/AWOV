@@ -7,6 +7,7 @@ public class BackButton : MonoBehaviour {
 
     public bool resetProperties;
 
+    public GameObject CanvasPrefab;
 
 	public void Back()
     {
@@ -16,5 +17,10 @@ public class BackButton : MonoBehaviour {
             GameObject.Find("Character").GetComponent<CharacterProperties>().ResetProperties(true);
         }
         transform.parent.gameObject.SetActive(false);
+    }
+
+    public void ResetAll()
+    {
+
     }
 }

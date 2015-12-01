@@ -28,7 +28,7 @@ public class CharacterPartButton : MonoBehaviour
     public GameObject NextOptionState;
     public GameObject PreviousOptionState;
     public GameObject Colors;
- 
+
     public Transform AllColors;
 
 
@@ -48,12 +48,18 @@ public class CharacterPartButton : MonoBehaviour
             {
                 TheCharacter.SetPushedBoobs(pushedBoobs);
             }
-            
+
         }
         CharacterPart.sprite = NewSprite;
-        for (int i = 0; i < AllColors.childCount; i++) {
-            AllColors.GetChild(i).gameObject.SetActive(false);
+
+        if (AllColors != null)
+        {
+            for (int i = 0; i < AllColors.childCount; i++)
+            {
+                AllColors.GetChild(i).gameObject.SetActive(false);
+            }
         }
+        if (Colors != null)
             Colors.SetActive(true);
 
     }
