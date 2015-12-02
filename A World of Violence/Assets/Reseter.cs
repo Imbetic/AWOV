@@ -17,7 +17,8 @@ public class Reseter : MonoBehaviour
         {
             if (oc.GetChild(0).childCount == 0)
             {
-                oc.GetComponent<Image>().sprite = oc.GetComponent<ImageManager>().idle;
+                if (oc.GetComponent<ImageManager>() != null && oc.GetComponent<Image>() != null)
+                    oc.GetComponent<Image>().sprite = oc.GetComponent<ImageManager>().idle;
                 if (oc.GetComponent<CharacterPartButton>() != null)
                 {
                     if (oc.GetComponent<CharacterPartButton>().Colors != null)
