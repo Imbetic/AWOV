@@ -11,11 +11,11 @@ public class BackButton : MonoBehaviour {
 
 	public void Back()
     {
-        previousState.SetActive(true);
-        if(resetProperties)
+        if (resetProperties)
         {
             GameObject.Find("Character").GetComponent<CharacterProperties>().ResetProperties(true);
         }
+        previousState.SetActive(true);   
         transform.parent.gameObject.SetActive(false);
     }
 

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class CharacterPartButton : MonoBehaviour
 {
-
+    public bool isColor;
     public SpriteRenderer CharacterPart;
 
     public Sprite NewSprite;
@@ -60,7 +60,9 @@ public class CharacterPartButton : MonoBehaviour
             }
         }
         if (Colors != null)
+        {
             Colors.SetActive(true);
+        }
 
     }
 
@@ -114,6 +116,13 @@ public class CharacterPartButton : MonoBehaviour
             else if (TheCharacter.bodyType == 4)
             {
                 NewSprite = m_m_sprite;
+            }
+        }
+        if (isColor)
+        {
+            if (CharacterPart.sprite == NewSprite)
+            {
+                GetComponent<ImageManager>().OnPressed();
             }
         }
     }

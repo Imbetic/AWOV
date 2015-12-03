@@ -25,6 +25,15 @@ public class ChangeSkinColorButton : MonoBehaviour {
         characterProperties = GameObject.Find("Character").GetComponent<CharacterProperties>();
     }
 
+    void OnEnable()
+    {
+        characterProperties = GameObject.Find("Character").GetComponent<CharacterProperties>();
+        if(characterProperties.skinColor == skinColor)
+        {
+            GetComponent<ImageManager>().OnPressed();
+        }
+    }
+
     public void ChangeSkinColor()
     {
         characterProperties.skinColor = skinColor;

@@ -27,6 +27,8 @@ public class BodyTypeButton : MonoBehaviour
 
     CharacterProperties characterProperties;
 
+    public NextButton nextButton;
+
     // Use this for initialization
     void Start()
     {
@@ -92,6 +94,6 @@ public class BodyTypeButton : MonoBehaviour
                 body.sprite = mDark;
             }
         }
-        characterProperties.readyToProceed = true;
+        nextButton.ownedbutton.enabled = true;
     }
 }
