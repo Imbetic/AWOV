@@ -4122,7 +4122,7 @@ GameObject:
   - 222: {fileID: 361771038}
   - 114: {fileID: 361771037}
   m_Layer: 0
-  m_Name: Text none (5)
+  m_Name: draped
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4166,7 +4166,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 689b7e7e796c8bd4595d3d9b193b8202, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 007fca974a2674a4d82740df04bf0f49, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -10962,7 +10962,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 018f999990f2642449f67332a13adb66, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 377ea4c8b9d99b9478fea185f66aec14, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12879,7 +12879,7 @@ GameObject:
   - 222: {fileID: 1130676047}
   - 114: {fileID: 1130676046}
   m_Layer: 0
-  m_Name: Text none (4)
+  m_Name: layered
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12923,7 +12923,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 655673815cc729443867caa295f6a762, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 79cdedc544c69f14f8183afad37a4d22, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -13063,7 +13063,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 959393fa9845e764ab961481293d87ed, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a0a52f1a1365e8b45b39b7fac3e87ee6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -14277,7 +14277,7 @@ GameObject:
   - 222: {fileID: 1331509286}
   - 114: {fileID: 1331509285}
   m_Layer: 0
-  m_Name: Text none (2)
+  m_Name: Forked
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14321,7 +14321,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 77fef481673b8724c9b0300475f9be61, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bc748a0b6c2eeb44a901fffe6fa1484b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -14691,7 +14691,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: ffc67d2c17c94ce44beb92549c23646b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 009a009d57277b34d8076d78fc528082, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -16316,7 +16316,7 @@ GameObject:
   - 222: {fileID: 1529085285}
   - 114: {fileID: 1529085284}
   m_Layer: 0
-  m_Name: Text none (3)
+  m_Name: ornate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16360,7 +16360,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: ca3a7f7abb1d88d40bdefad7e2555762, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 85f79bfc81e03ac4f9e46eca85e1400b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -16386,7 +16386,7 @@ GameObject:
   - 222: {fileID: 1532615614}
   - 114: {fileID: 1532615613}
   m_Layer: 0
-  m_Name: Text none (1)
+  m_Name: Basic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16430,7 +16430,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 655673815cc729443867caa295f6a762, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8738471ad8acf87468a68c03e6a7b95f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -16554,7 +16554,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 655673815cc729443867caa295f6a762, type: 3}
+  m_Sprite: {fileID: 21300000, guid: dc314ed6158572a4f9897bd74ff64cb5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -20359,7 +20359,7 @@ GameObject:
   - 222: {fileID: 1789711154}
   - 114: {fileID: 1789711153}
   m_Layer: 0
-  m_Name: Text none (6)
+  m_Name: feathered
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20403,7 +20403,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: ca3a7f7abb1d88d40bdefad7e2555762, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fc6356861c61b9545b5503e4dc17a632, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -24223,7 +24223,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 37b2bc46fd7a7194aa90f62b4d95d635, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1f4205080797fff4080a9aa341055842, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
