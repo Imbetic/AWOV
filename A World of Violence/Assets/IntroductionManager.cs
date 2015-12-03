@@ -19,7 +19,7 @@ public class IntroductionManager : MonoBehaviour {
                 {
                     introductionCanvas.transform.GetChild(i).gameObject.SetActive(true);
                 }
-                else introductionCanvas.transform.GetChild(i).gameObject.SetActive(false);
+                
             }
         }
         
@@ -30,8 +30,9 @@ public class IntroductionManager : MonoBehaviour {
                 if (i == 1)
                 {
                     introductionCanvas.transform.GetChild(i).gameObject.SetActive(true);
+                    introductionCanvas.transform.GetChild(i-1).gameObject.SetActive(false);
                 }
-                else introductionCanvas.transform.GetChild(i).gameObject.SetActive(false);
+                
             }
         }
         
@@ -42,8 +43,9 @@ public class IntroductionManager : MonoBehaviour {
                 if (i == 2)
                 {
                     introductionCanvas.transform.GetChild(i).gameObject.SetActive(true);
+                    introductionCanvas.transform.GetChild(i - 1).gameObject.SetActive(false);
                 }
-                else introductionCanvas.transform.GetChild(i).gameObject.SetActive(false);
+               
             }
         }
         
@@ -54,8 +56,9 @@ public class IntroductionManager : MonoBehaviour {
                 if (i == 3)
                 {
                     introductionCanvas.transform.GetChild(i).gameObject.SetActive(true);
+                    introductionCanvas.transform.GetChild(i - 1).gameObject.SetActive(false);
                 }
-                else introductionCanvas.transform.GetChild(i).gameObject.SetActive(false);
+               
             }
         }
         
@@ -66,8 +69,9 @@ public class IntroductionManager : MonoBehaviour {
                 if (i == 4)
                 {
                     introductionCanvas.transform.GetChild(i).gameObject.SetActive(true);
+                    introductionCanvas.transform.GetChild(i - 1).gameObject.SetActive(false);
                 }
-                else introductionCanvas.transform.GetChild(i).gameObject.SetActive(false);
+               
             }
         }
 
@@ -78,8 +82,9 @@ public class IntroductionManager : MonoBehaviour {
                 if (i == 4)
                 {
                     introductionCanvas.transform.GetChild(i).gameObject.SetActive(true);
+                    introductionCanvas.transform.GetChild(i - 1).gameObject.SetActive(false);
                 }
-                else introductionCanvas.transform.GetChild(i).gameObject.SetActive(false);
+               
             }
         }
 
@@ -90,8 +95,9 @@ public class IntroductionManager : MonoBehaviour {
                 if (i == 5)
                 {
                     introductionCanvas.transform.GetChild(i).gameObject.SetActive(true);
+                    introductionCanvas.transform.GetChild(i - 1).gameObject.SetActive(false);
                 }
-                else introductionCanvas.transform.GetChild(i).gameObject.SetActive(false);
+               
             }
         }
 
@@ -102,8 +108,9 @@ public class IntroductionManager : MonoBehaviour {
                 if (i == 6)
                 {
                     introductionCanvas.transform.GetChild(i).gameObject.SetActive(true);
+                    introductionCanvas.transform.GetChild(i - 1).gameObject.SetActive(false);
                 }
-                else introductionCanvas.transform.GetChild(i).gameObject.SetActive(false);
+               
             }
         }
 
