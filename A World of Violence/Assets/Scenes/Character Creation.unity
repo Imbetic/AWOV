@@ -3970,6 +3970,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0ffbd39f44755e4981a4f979ed92b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skinColors: {fileID: 469918596}
+  chooseAColorText: {fileID: 690457874}
   bodyType: 3
   femaleIcon: {fileID: 21300000, guid: 77191e999c9dd3542811190236f9e718, type: 3}
   femalePressed: {fileID: 21300000, guid: c6f9689a4c980614aa15b275f300f56c, type: 3}
@@ -6181,7 +6183,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &469918597
 Transform:
   m_ObjectHideFlags: 0
@@ -10094,6 +10096,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0ffbd39f44755e4981a4f979ed92b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skinColors: {fileID: 469918596}
+  chooseAColorText: {fileID: 690457874}
   bodyType: 2
   femaleIcon: {fileID: 21300000, guid: f534688aef0f63f44bce0bfb3534ffb4, type: 3}
   femalePressed: {fileID: 21300000, guid: 03a386a7a2182a345bfe88790d70a52b, type: 3}
@@ -15447,6 +15451,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f096fcd4463b8d44bb27ecae48f09203, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skinColors: {fileID: 469918596}
+  chooseAColorText: {fileID: 690457874}
   buttons: {fileID: 869755558}
 --- !u!1 &1387980449
 GameObject:
@@ -18819,6 +18825,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0ffbd39f44755e4981a4f979ed92b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skinColors: {fileID: 469918596}
+  chooseAColorText: {fileID: 690457874}
   bodyType: 1
   femaleIcon: {fileID: 21300000, guid: 35a8ed00dc78f0749b3e59adf29ef9f9, type: 3}
   femalePressed: {fileID: 21300000, guid: 41a0c7e2825c49441b3d54cc162a1988, type: 3}
@@ -19038,6 +19046,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f096fcd4463b8d44bb27ecae48f09203, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skinColors: {fileID: 0}
+  chooseAColorText: {fileID: 0}
   buttons: {fileID: 869755558}
 --- !u!114 &1624283436
 MonoBehaviour:
@@ -24058,6 +24068,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0ffbd39f44755e4981a4f979ed92b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skinColors: {fileID: 469918596}
+  chooseAColorText: {fileID: 690457874}
   bodyType: 4
   femaleIcon: {fileID: 21300000, guid: 655c3b0aab6886940b7e50e7d2abbc1c, type: 3}
   femalePressed: {fileID: 21300000, guid: 24bd7b1334ebd9546bb83b621a7833d1, type: 3}
@@ -25133,6 +25145,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f096fcd4463b8d44bb27ecae48f09203, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skinColors: {fileID: 469918596}
+  chooseAColorText: {fileID: 690457874}
   buttons: {fileID: 869755558}
 --- !u!1 &2120264306
 GameObject:

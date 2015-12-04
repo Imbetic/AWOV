@@ -3,12 +3,14 @@ using System.Collections;
 using UnityEngine.UI;
 public class Reseter : MonoBehaviour
 {
-
+    public GameObject skinColors, chooseAColorText;
     public Transform buttons;
 
     public void ResetAll()
     {
         RecursiveChildrenDisabling(buttons);
+        skinColors.SetActive(false);
+        chooseAColorText.SetActive(false);
     }
 
     void RecursiveChildrenDisabling(Transform oc)

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class BodyTypeButton : MonoBehaviour
 {
-
+    public GameObject skinColors, chooseAColorText;
     public int bodyType;
 
     public Sprite femaleIcon;
@@ -94,6 +94,9 @@ public class BodyTypeButton : MonoBehaviour
                 body.sprite = mDark;
             }
         }
+        chooseAColorText.SetActive(true);
+        skinColors.SetActive(true);
         nextButton.ownedbutton.enabled = true;
+
     }
 }
