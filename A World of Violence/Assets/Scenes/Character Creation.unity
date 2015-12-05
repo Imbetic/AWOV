@@ -223,6 +223,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 0}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &7568099
@@ -564,6 +565,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 1599713441}
   isChest: 1
   pushedBoobs: 0
 --- !u!114 &43410564
@@ -746,6 +748,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 0}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &65983755
@@ -1167,6 +1170,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 0}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &90944804
@@ -1620,6 +1624,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 1835555428}
   AllColors: {fileID: 1085385818}
+  colorSelectionText: {fileID: 1368376010}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &157108609
@@ -1803,6 +1808,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 1972729734}
   AllColors: {fileID: 1861175157}
+  colorSelectionText: {fileID: 1815512684}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &167642310
@@ -1986,6 +1992,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 1829886393}
   AllColors: {fileID: 1861175157}
+  colorSelectionText: {fileID: 1815512684}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &174013098
@@ -2150,6 +2157,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 0}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &179797408
@@ -2351,6 +2359,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 1599713441}
   isChest: 1
   pushedBoobs: 0
 --- !u!114 &181812666
@@ -2638,6 +2647,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 1824886244}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &215157828
@@ -2820,6 +2830,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 463228498}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &253471606
@@ -3074,6 +3085,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 1599713441}
   isChest: 1
   pushedBoobs: 1
 --- !u!114 &257291034
@@ -4069,6 +4081,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 1824886244}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &359355863
@@ -4530,6 +4543,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 130307882}
   AllColors: {fileID: 1861175157}
+  colorSelectionText: {fileID: 1815512684}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &375578891
@@ -4877,6 +4891,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 463228498}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &415569592
@@ -5060,6 +5075,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 0}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &416352395
@@ -5242,6 +5258,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 1599713441}
   isChest: 1
   pushedBoobs: 1
 --- !u!114 &416834337
@@ -5425,6 +5442,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 1824886244}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &428909740
@@ -5608,6 +5626,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 463228498}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &438662302
@@ -5985,6 +6004,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 1824886244}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &460379173
@@ -6517,6 +6537,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 1824886244}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &476475649
@@ -6871,6 +6892,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 0}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &531796939
@@ -7786,6 +7808,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 0}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &601647601
@@ -8108,6 +8131,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 824177982}
   AllColors: {fileID: 1861175157}
+  colorSelectionText: {fileID: 1815512684}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &631971435
@@ -8633,6 +8657,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 1507644480}
   AllColors: {fileID: 1085385818}
+  colorSelectionText: {fileID: 1368376010}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &672175101
@@ -8845,6 +8870,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 0}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &686263688
@@ -8975,7 +9001,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &690457875
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9167,6 +9193,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 463228498}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &727040274
@@ -9564,6 +9591,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 0}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &785929776
@@ -9746,6 +9774,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 1824886244}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &796502133
@@ -10335,6 +10364,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 0}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &850524686
@@ -10888,6 +10918,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 1824886244}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &898910363
@@ -11071,6 +11102,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 1824886244}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &904395894
@@ -12417,6 +12449,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 463228498}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1028703497
@@ -12739,6 +12772,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 1599713441}
   isChest: 1
   pushedBoobs: 0
 --- !u!114 &1056044272
@@ -12922,6 +12956,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 0}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1056865583
@@ -14085,6 +14120,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 463228498}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1159211027
@@ -14575,6 +14611,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 0}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1212791456
@@ -14757,6 +14794,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 1824886244}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1256851784
@@ -15233,7 +15271,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1368376011
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15662,6 +15700,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 0}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1392189539
@@ -16121,6 +16160,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 0}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1427901343
@@ -16515,6 +16555,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 0}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1478046816
@@ -17194,6 +17235,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 1824886244}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1519228275
@@ -17733,6 +17775,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 1599713441}
   isChest: 1
   pushedBoobs: 1
 --- !u!114 &1584762083
@@ -17916,6 +17959,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 0}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1585713140
@@ -18125,6 +18169,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 1085385818}
+  colorSelectionText: {fileID: 1368376010}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1588993952
@@ -18307,6 +18352,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 463228498}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1594910292
@@ -18560,6 +18606,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 1354325676}
   AllColors: {fileID: 1861175157}
+  colorSelectionText: {fileID: 1815512684}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1603653992
@@ -19828,6 +19875,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 1824886244}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1683947329
@@ -20011,6 +20059,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 1824886244}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1692907172
@@ -20471,6 +20520,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 1824886244}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1721083307
@@ -20683,6 +20733,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 1177438301}
   AllColors: {fileID: 1861175157}
+  colorSelectionText: {fileID: 1815512684}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1740298713
@@ -20907,6 +20958,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 0}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1757048493
@@ -21193,6 +21245,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 77608819}
   AllColors: {fileID: 1861175157}
+  colorSelectionText: {fileID: 1815512684}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1767311106
@@ -21758,7 +21811,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1815512685
 RectTransform:
   m_ObjectHideFlags: 0
@@ -22219,6 +22272,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 0}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1839515492
@@ -22630,6 +22684,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 1725196324}
   AllColors: {fileID: 1861175157}
+  colorSelectionText: {fileID: 1815512684}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1866675998
@@ -22985,6 +23040,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 1599713441}
   isChest: 1
   pushedBoobs: 1
 --- !u!114 &1928129458
@@ -23580,6 +23636,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 1824886244}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &1966271777
@@ -24236,6 +24293,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 0}
+  colorSelectionText: {fileID: 0}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &2031097356
@@ -24628,6 +24686,7 @@ MonoBehaviour:
   PreviousOptionState: {fileID: 0}
   Colors: {fileID: 0}
   AllColors: {fileID: 1861175157}
+  colorSelectionText: {fileID: 1815512684}
   isChest: 0
   pushedBoobs: 0
 --- !u!114 &2079052746

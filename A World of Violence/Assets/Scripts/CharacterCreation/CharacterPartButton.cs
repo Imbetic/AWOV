@@ -31,6 +31,8 @@ public class CharacterPartButton : MonoBehaviour
 
     public Transform AllColors;
 
+    public  GameObject colorSelectionText;
+
 
     public bool isChest;
     public bool pushedBoobs;
@@ -62,6 +64,14 @@ public class CharacterPartButton : MonoBehaviour
         if (Colors != null)
         {
             Colors.SetActive(true);
+            if(colorSelectionText != null)
+            {
+                colorSelectionText.SetActive(true);
+            }
+        }
+        else if(colorSelectionText != null)
+        {
+            colorSelectionText.SetActive(false);
         }
 
     }
