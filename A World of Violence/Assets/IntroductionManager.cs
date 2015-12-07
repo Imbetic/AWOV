@@ -4,14 +4,31 @@ using System.Collections;
 public class IntroductionManager : MonoBehaviour {
 
     public GameObject customizationCanvas, introductionCanvas;
+    public AudioSource MusicManager;
     float timer;
     float previousTimer;
 
+    bool firstframe = true;
+
 	void Update () 
     {
-        previousTimer = timer;
-        timer += Time.deltaTime;
-        if (timer >= 2 && previousTimer < 2)
+
+        if (timer >= 0.3 && previousTimer < 0.3)
+        {
+            MusicManager.enabled = true;
+        }
+
+        if (firstframe)
+        {
+            firstframe = false;
+        }
+        else
+        {
+            previousTimer = timer;
+            timer += Time.deltaTime;
+        }
+
+        if (timer >= 1.7 && previousTimer < 1.7)
         {
             for (int i = 0; i < introductionCanvas.transform.childCount; i++)
             {
@@ -23,7 +40,7 @@ public class IntroductionManager : MonoBehaviour {
             }
         }
         
-        if (timer >= 8.5 && previousTimer < 8.5)
+        if (timer >= 8.3 && previousTimer < 8.3)
         {
             for (int i = 0; i < introductionCanvas.transform.childCount; i++)
             {
@@ -36,7 +53,7 @@ public class IntroductionManager : MonoBehaviour {
             }
         }
         
-        if (timer >= 14.5 && previousTimer < 14.5)
+        if (timer >= 14.7 && previousTimer < 14.7)
         {
             for (int i = 0; i < introductionCanvas.transform.childCount; i++)
             {
@@ -49,7 +66,7 @@ public class IntroductionManager : MonoBehaviour {
             }
         }
         
-        if (timer >= 21 && previousTimer < 21)
+        if (timer >= 21.2 && previousTimer < 21.2)
         {
             for (int i = 0; i < introductionCanvas.transform.childCount; i++)
             {
@@ -88,7 +105,7 @@ public class IntroductionManager : MonoBehaviour {
             }
         }
 
-        if (timer >= 34 && previousTimer < 34)
+        if (timer >= 33.95 && previousTimer < 33.95)
         {
             for(int i = 0; i< introductionCanvas.transform.childCount; i++)
             {
@@ -101,7 +118,7 @@ public class IntroductionManager : MonoBehaviour {
             }
         }
 
-        if (timer >= 40 && previousTimer < 40)
+        if (timer >= 40.4 && previousTimer < 40.4)
         {
             for (int i = 0; i < introductionCanvas.transform.childCount; i++)
             {
@@ -114,7 +131,7 @@ public class IntroductionManager : MonoBehaviour {
             }
         }
 
-        if(timer >= 46.5 && previousTimer < 46.5)
+        if(timer >= 46.7 && previousTimer < 46.7)
         {
             customizationCanvas.SetActive(true);
             introductionCanvas.SetActive(false);
