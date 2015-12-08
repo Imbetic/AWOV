@@ -3,7 +3,7 @@ using System.Collections;
 
 public class IntroductionManager : MonoBehaviour {
 
-    public GameObject customizationCanvas, introductionCanvas;
+    public GameObject customizationCanvas, introductionCanvas, BehindText;
     public AudioSource MusicManager;
     float timer;
     float previousTimer;
@@ -34,6 +34,7 @@ public class IntroductionManager : MonoBehaviour {
             {
                 if (i == 0)
                 {
+                    BehindText.SetActive(true);
                     introductionCanvas.transform.GetChild(i).gameObject.SetActive(true);
                 }
                 
@@ -134,7 +135,7 @@ public class IntroductionManager : MonoBehaviour {
         if(timer >= 46.7 && previousTimer < 46.7)
         {
             customizationCanvas.SetActive(true);
-            introductionCanvas.SetActive(false);
+            introductionCanvas.transform.parent.gameObject.SetActive(false);
         }
 	}
 }
