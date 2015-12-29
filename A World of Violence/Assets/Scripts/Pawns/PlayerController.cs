@@ -68,7 +68,7 @@ public class PlayerController : CharacterActions
         }
         else moveRight = false;
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.W))
         {
             jump = true;
         }

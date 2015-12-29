@@ -1,0 +1,95 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class ManEaterBat : MonoBehaviour
+{
+
+    public Transform Target;
+    Rigidbody2D theRigidBody;
+    public float AttackDistance;
+    // Use this for initialization
+
+    public float attackTimer = 0;
+    public bool attacking = false;
+    float attackDelay;
+
+    public GameObject visuals;
+
+    void Start()
+    {
+        theRigidBody = GetComponent<Rigidbody2D>();
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        float dX = Target.position.x - transform.position.x;
+        if (!attacking)
+        {
+            if (dX < 0)
+            {
+                visuals.transform.localScale = new Vector3(1, 1, 1);
+            }
+            else
+            {
+                visuals.transform.localScale = new Vector3(-1, 1, 1);
+            }
+        }
+        float dY = Target.position.y - transform.position.y;
+
+        float distance = Mathf.Sqrt((dX * dX) + (dY * dY));
+
+        if (attacking)
+        {
+            attackDelay -= Time.deltaTime;
+            theRigidBody.velocity *= Mathf.Pow(0.4f, Time.deltaTime);
+            if (attackDelay <= 0)
+            {
+                theRigidBody.velocity = (new Vector2(7f * dX / distance, 7f * dY / distance));
+                attacking = false;
+            }
+        }
+        else
+        {
+            {
+
+
+                theRigidBody.AddForce(new Vector2(6f * dX / distance, 6f * dY / distance));
+
+                if (attackTimer > 0)
+                {
+                    attackTimer -= Time.deltaTime;
+
+                    if (attackTimer <= 0)
+                    {
+                        if (AttackDistance <= distance)
+                        {
+                            attackTimer = 0;
+                            
+                        }
+                        else
+                        {
+                            attacking = true;
+                            attackDelay = 1;
+                            
+                        }
+                        //theRigidBody.velocity *= Mathf.Pow(0.01f, Time.deltaTime);
+                    }
+                }
+                else if (distance < AttackDistance)
+                {
+                    attackTimer = (float)Random.Range(0, 300) / 100;
+                }
+            }
+        }
+        theRigidBody.velocity *= Mathf.Pow(0.5f, Time.deltaTime);
+        
+    }
+
+    public void OnDamaged()
+    {
+        attackTimer = 0;
+        attacking = false;
+    }
+
+}

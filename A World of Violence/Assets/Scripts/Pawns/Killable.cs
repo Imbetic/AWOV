@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Events;
 
 public class Killable : MonoBehaviour
 {
 
     public int health;
     float FreezeTimer;
+    
+    public UnityEvent onDamaged;
 
     void Update()
     {
@@ -18,7 +21,6 @@ public class Killable : MonoBehaviour
                 Time.timeScale = 1;
             }
         }
-
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -45,6 +47,7 @@ public class Killable : MonoBehaviour
                 }
             }
 
+            onDamaged.Invoke();
 
             health -= (int)other.GetComponent<AttackScript>().AttackDamage;
             GetComponent<ParticleSource>().CreateParticles(10, Vector2.zero);

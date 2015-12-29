@@ -10,6 +10,11 @@ public class IntroductionManager : MonoBehaviour {
 
     bool firstframe = true;
 
+    void Start()
+    {
+        Screen.SetResolution(1920, 1080, true);
+    }
+
 	void Update () 
     {
 
@@ -136,6 +141,11 @@ public class IntroductionManager : MonoBehaviour {
         {
             customizationCanvas.SetActive(true);
             introductionCanvas.transform.parent.gameObject.SetActive(false);
+        }
+
+        if(Input.GetKey(KeyCode.Escape))
+        {
+            Application.Quit();
         }
 	}
 }
