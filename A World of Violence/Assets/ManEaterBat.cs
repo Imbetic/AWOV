@@ -12,6 +12,7 @@ public class ManEaterBat : MonoBehaviour
     public float attackTimer = 0;
     public bool attacking = false;
     float attackDelay;
+    float previousDX;
 
     public GameObject visuals;
 
@@ -24,17 +25,36 @@ public class ManEaterBat : MonoBehaviour
     void FixedUpdate()
     {
         float dX = Target.position.x - transform.position.x;
-        if (!attacking)
+        if (dX < 0)
         {
-            if (dX < 0)
+            visuals.transform.localScale = new Vector3(1, 1, 1);
+            if (previousDX >= 0)
             {
-                visuals.transform.localScale = new Vector3(1, 1, 1);
-            }
-            else
-            {
-                visuals.transform.localScale = new Vector3(-1, 1, 1);
+                visuals.GetComponent<Animator>().SetBool("Attacking", false);
             }
         }
+        else
+        {
+            visuals.transform.localScale = new Vector3(-1, 1, 1);
+            if (previousDX < 0)
+            {
+                visuals.GetComponent<Animator>().SetBool("Attacking", false);
+            }
+        }
+        if (!attacking)
+        {
+            
+            //if (dX < 0)
+            //{
+            //    visuals.transform.localScale = new Vector3(1, 1, 1);
+            //}
+            //else
+            //{
+            //    visuals.transform.localScale = new Vector3(-1, 1, 1);
+            //}
+        }
+        previousDX = dX;
+
         float dY = Target.position.y - transform.position.y;
 
         float distance = Mathf.Sqrt((dX * dX) + (dY * dY));
@@ -47,6 +67,8 @@ public class ManEaterBat : MonoBehaviour
             {
                 theRigidBody.velocity = (new Vector2(7f * dX / distance, 7f * dY / distance));
                 attacking = false;
+                visuals.GetComponent<Animator>().SetBool("Attacking", true);
+                visuals.GetComponent<Animator>().SetBool("Preparing", false);
             }
         }
         else
@@ -65,13 +87,15 @@ public class ManEaterBat : MonoBehaviour
                         if (AttackDistance <= distance)
                         {
                             attackTimer = 0;
-                            
+                            visuals.GetComponent<Animator>().SetBool("Attacking", false);
+                            visuals.GetComponent<Animator>().SetBool("Preparing", false);
                         }
                         else
                         {
                             attacking = true;
-                            attackDelay = 1;
-                            
+                            visuals.GetComponent<Animator>().SetBool("Attacking", false);
+                            visuals.GetComponent<Animator>().SetBool("Preparing", true);
+                            attackDelay = 1;                           
                         }
                         //theRigidBody.velocity *= Mathf.Pow(0.01f, Time.deltaTime);
                     }
@@ -90,6 +114,11 @@ public class ManEaterBat : MonoBehaviour
     {
         attackTimer = 0;
         attacking = false;
+    }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        visuals.GetComponent<Animator>().SetBool("Attacking", false);
     }
 
 }
