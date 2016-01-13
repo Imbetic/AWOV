@@ -7,6 +7,7 @@ public class Killable : MonoBehaviour
 
     public int health;
     float FreezeTimer;
+    bool canTakeDamage;
     
     public UnityEvent onDamaged;
 

@@ -114,11 +114,21 @@ public class ManEaterBat : MonoBehaviour
     {
         attackTimer = 0;
         attacking = false;
+        visuals.GetComponent<Animator>().SetBool("Preparing", false);
+        if (visuals.GetComponent<Animator>().GetBool("Attacking"))
+        {
+            theRigidBody.velocity *= -1;
+            visuals.GetComponent<Animator>().SetBool("Attacking", false);
+        }
     }
 
     void OnCollisionEnter2D(Collision2D other)
     {
+        
+
         visuals.GetComponent<Animator>().SetBool("Attacking", false);
+        
+        
     }
 
 }
