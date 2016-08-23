@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class VE_Button : MonoBehaviour {
    
     public bool isTargeted; //set to true on starting button, false on the rest
-    public bool isTargetedThisFrame;
+    bool isTargetedThisFrame;
     public VE_Button rightButton, leftButton, downButton, upButton; //These are the buttons you can switch to from the current one. Assign them in the editor.
     public KeyCode rightKey = KeyCode.RightArrow, leftKey = KeyCode.LeftArrow, downKey = KeyCode.DownArrow, upKey = KeyCode.UpArrow, enterKey = KeyCode.KeypadEnter; //Default is arrow keys and Enter button. Bind keys to these in editor.
     public Sprite idleImage, targetedImage, pressedImage; //What the button looks like during these stages. Assign an image to each stage in the editor.
@@ -14,23 +14,32 @@ public class VE_Button : MonoBehaviour {
     VE_Button nextButton;
 
     public UnityEvent onPressed;
+    public UnityEvent onKeyUp;
+    public UnityEvent onKeyDown;
+    public UnityEvent onKeyRight;
+    public UnityEvent onKeyLeft;
+    public UnityEvent onSelected;
     public AudioClip soundPressed;
     public AudioClip soundMoved;
 
     AudioSource audioSource;
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
         audioSource = GetComponent<AudioSource>();
         if (isTargeted)
         {
             GetComponent<Image>().sprite = targetedImage;
+            isTargetedThisFrame = true;
         }
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         if(isTargetedThisFrame)
         {
+            onSelected.Invoke();
             isTargetedThisFrame = false;
         }
         else if (isTargeted)
@@ -53,6 +62,7 @@ public class VE_Button : MonoBehaviour {
                         audioSource.PlayOneShot(soundMoved);
 
                     }
+                    onKeyRight.Invoke();
                     nextButton = rightButton;
                 }
             }
@@ -65,6 +75,7 @@ public class VE_Button : MonoBehaviour {
                         audioSource.PlayOneShot(soundMoved);
 
                     }
+                    onKeyLeft.Invoke();
                     nextButton = leftButton;
                 }
             }
@@ -77,6 +88,7 @@ public class VE_Button : MonoBehaviour {
                         audioSource.PlayOneShot(soundMoved);
 
                     }
+                    onKeyDown.Invoke();
                     nextButton = downButton;
                 }
             }
@@ -89,6 +101,7 @@ public class VE_Button : MonoBehaviour {
                         audioSource.PlayOneShot(soundMoved);
 
                     }
+                    onKeyUp.Invoke();
                     nextButton = upButton;
                 }
             }
@@ -110,7 +123,7 @@ public class VE_Button : MonoBehaviour {
 
             }
         }
-
+        
 
 	}
 }
